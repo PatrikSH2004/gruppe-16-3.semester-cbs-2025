@@ -3,3 +3,5 @@ Studiegruppe projekt for cbs HA(it) 3. semester. Projekt med udgangspunkt i Unde
 
 # Opgave-liste
 - Tjek adgangsforhold og administrationsforhold
+- Fix .gitignore
+- Udfyld liste yderligere
