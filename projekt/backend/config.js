@@ -1,1 +1,1 @@
-let mig = 1
+let mig = 1;
