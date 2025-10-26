@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dine Loyalty-kort</title>
+    <link rel="stylesheet" href="../../stylesheets/style.css">
+    <link rel="stylesheet" href="../../stylesheets/customer-dashboard.css">
+</head>
+<body>
+    <div class="container dashboard">
+        <nav class="top-nav">
+            <div class="nav-left">
+                <h1>Dine loyalty-kort</h1>
+            </div>
+            <div class="nav-right">
+                <button class="logout-btn" onclick="handleLogout()">Log ud</button>
+            </div>
+        </nav>
+
+        <div class="loyalty-cards">
+            <!-- Morning Flow Card -->
+            <div class="loyalty-card">
+                <div class="card-top">
+                    <img src="../../images/pizzeria.svg" alt="Morning Flow" class="card-image">
+                </div>
+                <div class="card-header">
+                    <h3>Morning Flow</h3>
+                    <label class="toggle-switch">
+                        <span>View Reward?</span>
+                        <input type="checkbox">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="stars">
+                    <span class="star active">★</span>
+                    <span class="star active">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                </div>
+                <p class="progress-text">Du mangler 2 bookinger for at opnå: Rabat 20%</p>
+                <div class="card-actions">
+                    <button class="action-btn claim">Claim reward</button>
+                    <button class="action-btn book">Book next trip</button>
+                </div>
+                <div class="card-dates">
+                    <span>Start: 1.1.2025</span>
+                    <span>Slut: 31.12.2025</span>
+                </div>
+            </div>
+
+            <!-- frsv Card -->
+            <div class="loyalty-card">
+                <div class="card-top">
+                    <img src="../../images/pizzeria.svg" alt="frsv" class="card-image">
+                </div>
+                <div class="card-header">
+                    <h3>frsv</h3>
+                    <label class="toggle-switch">
+                        <span>View Reward?</span>
+                        <input type="checkbox">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="stars">
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                </div>
+                <p class="progress-text">Du mangler 3 bookinger for at opnå: hi</p>
+                <div class="card-actions">
+                    <button class="action-btn claim">Claim reward</button>
+                    <button class="action-btn book">Book next trip</button>
+                </div>
+                <div class="card-dates">
+                    <span>Start: 1.1.2025</span>
+                    <span>Slut: 31.12.2025</span>
+                </div>
+            </div>
+
+            <!-- testt Card -->
+            <div class="loyalty-card">
+                <div class="card-top">
+                    <img src="../../images/pizzeria.svg" alt="testtt" class="card-image">
+                </div>
+                <div class="card-header">
+                    <h3>testtt</h3>
+                    <label class="toggle-switch">
+                        <span>View Reward?</span>
+                        <input type="checkbox">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="stars">
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                </div>
+                <p class="progress-text">Ingen reward knyttet endnu</p>
+                <div class="card-actions">
+                    <button class="action-btn claim">Claim reward</button>
+                    <button class="action-btn book">Book next trip</button>
+                </div>
+                <div class="card-dates">
+                    <span>Start: 13.3.4444</span>
+                    <span>Slut: 31.12.2025</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../../javascript/auth.js"></script>
+</body>
+</html>

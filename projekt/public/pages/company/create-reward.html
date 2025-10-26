@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Opret Reward</title>
+    <link rel="stylesheet" href="../../stylesheets/style.css">
+</head>
+<body class="modal-background">
+    <div class="modal-wrapper">
+        <div class="event-modal">
+            <div class="modal-header">
+                <h2>Opret Reward</h2>
+                <button class="close-btn" onclick="window.location.href='dashboard.html'">×</button>
+            </div>
+            <form class="event-form" onsubmit="handleSubmit(event)">
+                <div class="form-field">
+                    <label>Vælg event</label>
+                    <select required>
+                        <option value="">Vælg event</option>
+                        <option>Morning Flow</option>
+                        <option>frsv</option>
+                        <option>testtt</option>
+                    </select>
+                </div>
+                <div class="form-field">
+                    <label>Reward type</label>
+                    <div style="display: flex; gap: 0.5rem; align-items: center;">
+                        <select id="rewardTypeSelect" required style="flex:1;"></select>
+                        <button type="button" id="deleteRewardType" title="Slet valgmulighed" style="background: #ffebee; color: #c82333; border: none; border-radius: 4px; padding: 0 0.7em; font-size: 1.2em; cursor: pointer;">×</button>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+                        <input type="text" id="newRewardType" placeholder="Tilføj ny type..." style="flex:1;">
+                        <button type="button" id="addRewardType" style="background: #2e8b57; color: white; border: none; border-radius: 4px; padding: 0 1em; cursor: pointer;">Tilføj</button>
+                    </div>
+                </div>
+                <div class="form-field">
+                    <label>Beskrivelse</label>
+                    <input type="text" placeholder="Kort beskrivelse" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-field">
+                        <label>Betingelse (# gange)</label>
+                        <input type="number" min="1" placeholder="" required>
+                    </div>
+                    <div class="form-field">
+                        <label>Kvoter (valgfrit)</label>
+                        <input type="text" placeholder="fx 100">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-field">
+                        <label>Reward udløbsdato</label>
+                        <input type="date" required>
+                    </div>
+                    <div class="form-field">
+                        <label>Claim dato</label>
+                        <input type="date" required>
+                    </div>
+                </div>
+                <button type="submit" class="gem-btn">Gem reward</button>
+            </form>
+        </div>
+    </div>
+    <script src="../../javascript/create-reward.js"></script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Opret Virksomhed</title>
+    <link rel="stylesheet" href="../../stylesheets/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="login-box">
+            <h1>Opret Virksomhed</h1>
+            <form class="login-form" onsubmit="return handleCompanyRegister(event)">
+                <input type="text" placeholder="Virksomhedsnavn" required>
+                <input type="text" placeholder="CVR" pattern="[0-9]{8}" title="CVR skal være præcis 8 cifre" required>
+                <input type="email" placeholder="Email" required>
+                <input type="password" placeholder="Adgangskode" required>
+                <button type="submit" class="login-btn">Opret Virksomhed</button>
+            </form>
+            <script src="../../javascript/auth.js"></script>
+            <p>Har du allerede en konto? <a href="login.html">Log ind</a></p>
+        </div>
+    </div>
+</body>
+</html>

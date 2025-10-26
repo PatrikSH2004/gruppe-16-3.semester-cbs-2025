@@ -1,0 +1,162 @@
+/* Customer Dashboard Styles */
+.container.dashboard {
+    max-width: none;
+    padding: 0;
+}
+
+.loyalty-cards {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    padding: 1rem;
+}
+
+.loyalty-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Top image area */
+.card-top {
+    background: #eaf7ef; /* soft green */
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    height: 110px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: -1.5rem -1.5rem 1rem -1.5rem; /* extend to card edges */
+}
+
+.card-image {
+    max-height: 60px;
+    max-width: 70%;
+    object-fit: contain;
+}
+
+/* Reduce top padding inside card after adding top area */
+.loyalty-card .card-header {
+    margin-top: 0.5rem;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.card-header h3 {
+    margin: 0;
+    color: #333;
+    font-size: 1.2rem;
+}
+
+/* Toggle Switch */
+.toggle-switch {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.toggle-switch input {
+    display: none;
+}
+
+.slider {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 20px;
+    background-color: #e0e0e0;
+    border-radius: 20px;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.slider:before {
+    content: "";
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: white;
+    top: 2px;
+    left: 2px;
+    transition: 0.3s;
+}
+
+input:checked + .slider {
+    background-color: #2e8b57;
+}
+
+input:checked + .slider:before {
+    transform: translateX(20px);
+}
+
+/* Stars */
+.stars {
+    margin: 1rem 0;
+    color: #e0e0e0;
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+}
+
+.star.active {
+    color: #2e8b57;
+}
+
+/* Progress Text */
+.progress-text {
+    color: #666;
+    margin: 1rem 0;
+    font-size: 0.95rem;
+}
+
+/* Card Actions */
+.card-actions {
+    display: flex;
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+.action-btn {
+    flex: 1;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.action-btn.claim {
+    background-color: #2e8b57;
+    color: white;
+}
+
+.action-btn.book {
+    background-color: white;
+    color: #2e8b57;
+    border: 1px solid #2e8b57;
+}
+
+.action-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Card Dates */
+.card-dates {
+    display: flex;
+    justify-content: space-between;
+    color: #999;
+    font-size: 0.85rem;
+    margin-top: 1rem;
+}

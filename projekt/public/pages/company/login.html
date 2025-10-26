@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Virksomhed Login</title>
+    <link rel="stylesheet" href="../../stylesheets/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="login-box">
+            <h1>Virksomhed Login</h1>
+            <form class="login-form" onsubmit="return handleCompanyLogin(event)">
+                <input type="email" placeholder="Email" required>
+                <input type="password" placeholder="Adgangskode" required>
+                <button type="submit" class="login-btn">Virksomhed Login</button>
+            </form>
+            <script src="../../javascript/auth.js"></script>
+            <p>Ingen konto? <a href="register.html">Opret virksomhed</a></p>
+        </div>
+    </div>
+</body>
+</html>
