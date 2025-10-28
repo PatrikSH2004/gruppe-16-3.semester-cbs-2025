@@ -12,7 +12,7 @@ let database;
 })();
 
 router.get('/', function(req, res) {
-    res.sendFile(path.join(__dirname, '../public/index.html'));
+    res.sendFile(path.join(__dirname, '../public/pages/index.html'));
 });
 
 // Add API endpoints for database operations
