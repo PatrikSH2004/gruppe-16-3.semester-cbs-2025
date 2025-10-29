@@ -34,4 +34,20 @@ router.post('/api/stop', async (req, res) => {
     }
 });
 
+router.get('/customerLogin', function(req, res) {
+    res.sendFile(path.join(__dirname, '../public/pages/customer/login.html'));
+});
+
+router.get('/firmLogin', function(req, res) {
+    res.sendFile(path.join(__dirname, '../public/pages/company/login.html'));
+});
+
+router.get('/customerSignUp', function(req, res) {
+    res.sendFile(path.join(__dirname, '../public/pages/customer/register.html'));
+});
+
+router.get('/firmSignUp', function(req, res) {
+    res.sendFile(path.join(__dirname, '../public/pages/company/register.html'));
+});
+
 module.exports = router;
