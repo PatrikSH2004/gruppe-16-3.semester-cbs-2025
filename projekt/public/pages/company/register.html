@@ -13,6 +13,10 @@
                 <input type="text" placeholder="CVR" pattern="[0-9]{8}" title="CVR skal være præcis 8 cifre" required>
                 <input type="email" placeholder="Email" required>
                 <input type="password" placeholder="Adgangskode" required>
+                <div class="file-upload">
+                    <label for="companyLogo">Virksomhedens Logo:</label>
+                    <input type="file" id="companyLogo" name="companyLogo" accept="image/*" required>
+                </div>
                 <button type="submit" class="login-btn">Opret Virksomhed</button>
             </form>
             <script src="../../javascript/auth.js"></script>

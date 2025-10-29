@@ -1,47 +1,43 @@
 // Create Reward modal JS
-let rewardTypes = ["Rabat 20%", "Gratis kaffe", "VIP adgang"];
-
-function renderRewardTypes(select) {
-    select.innerHTML = "";
-    rewardTypes.forEach((type) => {
-        const opt = document.createElement("option");
-        opt.value = type;
-        opt.textContent = type;
-        select.appendChild(opt);
-    });
-}
-
-function setupRewardTypeUI() {
-    const select = document.getElementById("rewardTypeSelect");
-    const addBtn = document.getElementById("addRewardType");
-    const newInput = document.getElementById("newRewardType");
-    const deleteBtn = document.getElementById("deleteRewardType");
-    renderRewardTypes(select);
-
-    addBtn.onclick = function() {
-        const val = newInput.value.trim();
-        if(val && !rewardTypes.includes(val)) {
-            rewardTypes.push(val);
-            renderRewardTypes(select);
-            select.value = val;
-            newInput.value = "";
-        }
-    };
-    deleteBtn.onclick = function() {
-        const idx = rewardTypes.indexOf(select.value);
-        if(idx > -1) {
-            rewardTypes.splice(idx, 1);
-            renderRewardTypes(select);
-            select.selectedIndex = 0;
-        }
-    };
-}
 
 document.addEventListener("DOMContentLoaded", function() {
-    setupRewardTypeUI();
+    const form = document.querySelector('.event-form');
+    if (form) form.addEventListener('submit', handleSubmitReward);
 });
 
 function handleSubmitReward(event) {
     event.preventDefault();
+
+    const name = document.getElementById('rewardName').value.trim();
+    const description = document.getElementById('rewardDescription').value.trim();
+    const conditionVal = document.getElementById('rewardCondition').value;
+    const quotas = document.getElementById('rewardQuotas').value.trim();
+    // Basic validation
+    if (!name) {
+        alert('Indtast et navn til reward');
+        return false;
+    }
+    const condition = parseInt(conditionVal, 10);
+    if (isNaN(condition) || condition < 1) {
+        alert('Betingelse skal være et heltal større end 0');
+        return false;
+    }
+
+    // Allow quotas to be empty or '-' to indicate not set
+    const quotasValue = (!quotas || quotas === '-') ? null : quotas;
+
+    // For now just log the collected data and redirect to dashboard
+    const payload = {
+        name,
+        description,
+        condition,
+        quotas: quotasValue
+    };
+    console.log('Create reward payload:', payload);
+
+    // TODO: send payload to backend API (POST /api/rewards)
+
+    // Redirect back to dashboard after creating
     window.location.href = 'dashboard.html';
+    return false;
 }
