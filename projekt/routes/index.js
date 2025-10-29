@@ -34,22 +34,20 @@ router.post('/api/stop', async (req, res) => {
     }
 });
 
-// tænker vi kan bruge den her til at logge ud. 
-router.post('/logout', (req, res) => {
-    req.session.destroy((err) => {
-        if (err) {
-            console.error('Fejl ved logout:', err);
-            res.status(500).json({ error: 'Der opstod en fejl ved logout' });
-        } else {
-            res.status(200).json({ message: 'Logget ud succesfuldt' });
-        }
-    });
+router.get('/customerLogin', function(req, res) {
+    res.sendFile(path.join(__dirname, '../public/pages/customer/login.html'));
 });
 
-module.exports = router; // eksporterer routeren, så den kan bruges i app.js
+router.get('/firmLogin', function(req, res) {
+    res.sendFile(path.join(__dirname, '../public/pages/company/login.html'));
+});
 
+router.get('/customerSignUp', function(req, res) {
+    res.sendFile(path.join(__dirname, '../public/pages/customer/register.html'));
+});
 
-
-
+router.get('/firmSignUp', function(req, res) {
+    res.sendFile(path.join(__dirname, '../public/pages/company/register.html'));
+});
 
 module.exports = router;
