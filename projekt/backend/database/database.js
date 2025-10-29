@@ -38,6 +38,29 @@ class Database{
         };
     };
 
+    //Metode til at sende customer data til databasen.
+    async createCustomer(name, email, password) {
+        try {
+            // Specificer vores query elementer.
+            const request = await this.poolconnection.request();
+            request.input('brugerName', mssql.VarChar(name.length), name);
+            request.input('brugerEmail', mssql.VarChar(email.length), email);
+            request.input('brugerPassword', mssql.VarChar(password.length), password);
+
+            // Afsender vores query request til databasen.
+            const result = await request.query(`
+                INSERT INTO dis.bruger (brugerNavn, brugerMail, brugerAdgangKode)
+                VALUES (@brugerName, @brugerEmail, @brugerPassword)
+            `);
+
+            return result.rowsAffected[0];
+
+        } catch (error) {
+            console.error("Fejl ved håndtering af query request til createCustomer metoden", error);
+        };
+
+    };
+
 };
 
 /*

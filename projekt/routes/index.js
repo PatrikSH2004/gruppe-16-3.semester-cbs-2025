@@ -62,8 +62,19 @@ router.post('/logout', (req, res) => {
     });
 });
 
+router.post('/customerSignUp', async function(req, res) {
+    try {
+        // Vi tjekker om dataen allerede eksisterer (logik funktion).
+
+        // Hvis det ikke eksister, sender vi den nye til databasen.
+        const result = await database.createCustomer(req.body.userName, req.body.userMail, req.body.userPassword);
+        res.sendStatus(201);
+
+    } catch (error) {
+        res.sendStatus(500);
+    };
+
+    
+});
+
 module.exports = router; // eksporterer routeren, så den kan bruges i app.js
-
-
-
-module.exports = router;

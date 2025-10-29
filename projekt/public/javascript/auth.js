@@ -28,6 +28,33 @@ document.addEventListener('DOMContentLoaded', function() {
                 alert('Der skete en fejl under logout');
             } 
         });
-    }
+    };
+
+    // DOM til at afsende customer data ved sign-up
+    const form = document.getElementById("costumerRegisterForm");
+
+    form.addEventListener("submit", async (event) =>{
+        event.preventDefault();
+
+        // Afhenter data fra brugeren.
+        const userName = document.getElementById("KundeName").value;
+        const userMail = document.getElementById("kundeEmail").value;
+        const userPassword = document.getElementById("kundePassword").value;
+        
+        // Opstiller en JSON payload med brugerens data til en post request.
+        const response = await fetch("/customerSignUp", {
+            method : "POST",
+            headers : {"Content-Type": "application/json"},
+            body: JSON.stringify({userName, userMail, userPassword})
+        });
+
+        //Tjekker om vi har successfuld respons og informer brugeren.
+        if (response.ok) {
+            alert("Konto er oprettet successfuldt");
+        } else {
+            alert("Noget gik galt. Prøv igen senere");
+        };
+    });
+
 });
 
