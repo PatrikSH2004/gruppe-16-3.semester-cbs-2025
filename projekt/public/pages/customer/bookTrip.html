@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Din Næste Tur</title>
+  <link rel="stylesheet" href="../../stylesheets/bookTrip.css">
+</head>
+<body>
+  <div class="booking-container">
+    <div class="booking-card">
+      <h1>📅 Book Din Næste Tur</h1>
+      <p class="subtitle">Vælg en dato og et tidspunkt for din booking</p>
+
+      <form class="booking-form">
+        <!-- Dato -->
+        <div class="form-group">
+          <label for="date">Dato</label>
+          <div class="input-wrapper">
+            <input type="date" id="date" name="date" required>
+          </div>
+        </div>
+
+        <!-- Tidspunkt -->
+        <div class="form-group">
+          <label for="time">Tidspunkt</label>
+          <div class="input-wrapper">
+            <input type="time" id="time" name="time" required>
+          </div>
+        </div>
+
+        <!-- Preview (viser valgte værdier dynamisk) -->
+        <div class="preview" id="preview">Vælg en dato og et tidspunkt</div>
+
+        <!-- Knapper -->
+        <div class="button-row">
+          <button type="button" class="cancel-btn">❌ Annullér</button>
+          <button type="submit" class="confirm-btn">✅ Bekræft</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Simpel preview funktionalitet
+    const dateInput = document.getElementById("date");
+    const timeInput = document.getElementById("time");
+    const preview = document.getElementById("preview");
+
+    function updatePreview() {
+      const date = dateInput.value;
+      const time = timeInput.value;
+      if (date && time) {
+        const formattedDate = new Date(date).toLocaleDateString("da-DK", {
+          day: "2-digit", month: "long", year: "numeric"
+        });
+        preview.textContent = `Du har valgt: ${formattedDate} kl. ${time}`;
+      } else {
+        preview.textContent = "Vælg en dato og et tidspunkt";
+      }
+    }
+
+    dateInput.addEventListener("change", updatePreview);
+    timeInput.addEventListener("change", updatePreview);
+  </script>
+</body>
+</html>

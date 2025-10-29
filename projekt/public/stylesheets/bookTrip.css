@@ -1,0 +1,171 @@
+/* --- Grundopsætning --- */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: "Inter", "Lucida Grande", Helvetica, Arial, sans-serif;
+  background: linear-gradient(to bottom right, #f0f8f0, #e6f2ea);
+}
+
+/* --- Wrapper der centrerer kortet --- */
+.booking-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* Fyld hele skærmen */
+  width: 100%;
+}
+
+/* --- Kort container --- */
+.booking-card {
+  background: white;
+  padding: 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  max-width: 440px;
+  text-align: left;
+  transition: all 0.3s ease;
+}
+
+.booking-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* --- Overskrifter --- */
+.booking-card h1 {
+  color: #2e8b57;
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.subtitle {
+  color: #555;
+  margin-bottom: 2rem;
+}
+
+/* --- Form felter --- */
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  color: #2e8b57;
+  margin-bottom: 0.4rem;
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-wrapper input {
+  width: 100%;
+  padding: 0.9rem 1rem;
+  border: 1px solid #d6e9dc;
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: #f9fff9;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+}
+
+.input-wrapper input:focus {
+  outline: none;
+  border-color: #2e8b57;
+  box-shadow: 0 0 0 3px rgba(46, 139, 87, 0.1);
+}
+
+/* --- Gør hele feltet klikbart til kalender/tid --- */
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  opacity: 0;
+}
+
+/* --- Preview tekst --- */
+.preview {
+  background-color: #f5fef7;
+  border: 1px dashed #b8e0c5;
+  border-radius: 8px;
+  padding: 0.8rem;
+  font-size: 0.95rem;
+  color: #2e8b57;
+  margin-bottom: 1.8rem;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.preview.active {
+  background-color: #e6faee;
+  border-color: #7ed9a2;
+  transform: scale(1.02);
+}
+
+/* --- Knapper --- */
+.button-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+button {
+  flex: 1;
+  padding: 0.9rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* --- Annullér-knap --- */
+.cancel-btn {
+  background-color: #f3f3f3;
+  color: #444;
+  border: 1px solid #ddd;
+}
+
+.cancel-btn:hover {
+  background-color: #f8d7da;
+  color: #a94442;
+  border-color: #f1b0b7;
+  transform: translateY(-1px);
+}
+
+/* --- Bekræft-knap --- */
+.confirm-btn {
+  background-color: #2e8b57;
+  color: white;
+  box-shadow: 0 4px 10px rgba(46, 139, 87, 0.25);
+}
+
+.confirm-btn:hover {
+  background-color: #246b45;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(46, 139, 87, 0.3);
+}
+
+/* --- Responsivitet --- */
+@media (max-width: 480px) {
+  .booking-card {
+    padding: 1.8rem;
+  }
+
+  .button-row {
+    flex-direction: column;
+  }
+}
