@@ -1,3 +1,4 @@
+/* Routes for customer-related operations */
 var express = require('express');
 var router = express.Router();
 
