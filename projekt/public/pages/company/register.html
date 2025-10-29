@@ -5,23 +5,44 @@
     <link rel="stylesheet" href="../../stylesheets/style.css">
 </head>
 <body>
-    <div class="container">
-        <div class="login-box">
+    <div class="auth-container">
+        <div class="form-card">
             <h1>Opret Virksomhed</h1>
-            <form class="login-form" onsubmit="return handleCompanyRegister(event)">
-                <input type="text" placeholder="Virksomhedsnavn" required>
-                <input type="text" placeholder="CVR" pattern="[0-9]{8}" title="CVR skal være præcis 8 cifre" required>
-                <input type="email" placeholder="Email" required>
-                <input type="password" placeholder="Adgangskode" required>
-                <div class="file-upload">
-                    <label for="companyLogo">Virksomhedens Logo:</label>
+            <form class="register-form">
+                <div class="form-group">
+                    <label for="companyName">Virksomhedsnavn</label>
+                    <input type="text" id="companyName" placeholder="Indtast virksomhedsnavn" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="cvr">CVR</label>
+                    <input type="text" id="cvr" placeholder="Indtast CVR (8 cifre)" pattern="[0-9]{8}" title="CVR skal være præcis 8 cifre" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="Indtast email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Adgangskode</label>
+                    <input type="password" id="password" placeholder="Indtast adgangskode" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="companyLogo">Virksomhedens Logo</label>
                     <input type="file" id="companyLogo" name="companyLogo" accept="image/*" required>
                 </div>
-                <button type="submit" class="login-btn">Opret Virksomhed</button>
+
+                <button type="submit" class="primary-btn">Opret Virksomhed</button>
             </form>
-            <script src="../../javascript/auth.js"></script>
-            <p>Har du allerede en konto? <a href="login.html">Log ind</a></p>
+
+            <p class="login-text">
+                Har du allerede en konto? <a href="/firmLogin">Log ind</a>
+            </p>
         </div>
     </div>
-</body>
+</body>  
+<script src="../../javascript/auth.js"></script>
+
 </html>

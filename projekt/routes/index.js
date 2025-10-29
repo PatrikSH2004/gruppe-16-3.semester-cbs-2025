@@ -50,4 +50,20 @@ router.get('/firmSignUp', function(req, res) {
     res.sendFile(path.join(__dirname, '../public/pages/company/register.html'));
 });
 
+// tænker vi kan bruge den her til at logge ud. 
+router.post('/logout', (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            console.error('Fejl ved logout:', err);
+            res.status(500).json({ error: 'Der opstod en fejl ved logout' });
+        } else {
+            res.status(200).json({ message: 'Logget ud succesfuldt' });
+        }
+    });
+});
+
+module.exports = router; // eksporterer routeren, så den kan bruges i app.js
+
+
+
 module.exports = router;
