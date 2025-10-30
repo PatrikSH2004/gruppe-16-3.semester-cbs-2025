@@ -62,14 +62,28 @@ router.post('/logout', (req, res) => {
     });
 });
 
+// Post request til at sende customer data.
 router.post('/customerSignUp', async function(req, res) {
     try {
         // Vi tjekker om dataen allerede eksisterer (logik funktion).
 
         // Hvis det ikke eksister, sender vi den nye til databasen.
-        const result = await database.createCustomer(req.body.userName, req.body.userMail, req.body.userPassword);
+        await database.createCustomer(req.body.userName, req.body.userMail, req.body.userPassword);
         res.sendStatus(201);
+    } catch (error) {
+        res.sendStatus(500);
+    };
 
+    
+});
+
+router.post('/firmSignUp', async function(req, res) {
+    try {
+        // Vi tjekker om dataen allerede eksisterer (logik funktion).
+        console.log(req.body.firmName, req.body.firmMail, req.body.firmPassword);
+        // Hvis det ikke eksister, sender vi den nye til databasen.
+        await database.createFirm(req.body.firmName, req.body.firmMail, req.body.firmPassword);
+        res.sendStatus(201);
     } catch (error) {
         res.sendStatus(500);
     };

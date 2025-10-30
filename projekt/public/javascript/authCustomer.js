@@ -31,9 +31,9 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     // DOM til at afsende customer data ved sign-up
-    const form = document.getElementById("costumerRegisterForm");
+    const formRegisterCustomer = document.getElementById("costumerRegisterForm");
 
-    form.addEventListener("submit", async (event) =>{
+    formRegisterCustomer.addEventListener("submit", async (event) =>{
         event.preventDefault();
 
         // Afhenter data fra brugeren.

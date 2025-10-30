@@ -61,6 +61,28 @@ class Database{
 
     };
 
+    async createFirm(firmName, firmMail, firmPassword) {
+        console.log(firmName, firmMail, firmPassword);
+        try {
+            // Specificer vores query elementer.
+            const request = await this.poolconnection.request();
+            request.input('firmName', mssql.VarChar(firmName.length), firmName);
+            request.input('firmEmail', mssql.VarChar(firmMail.length), firmMail);
+            request.input('firmPassword', mssql.VarChar(firmPassword.length), firmPassword);
+
+            // Afsender vores query request til databasen.
+            const result = await request.query(`
+                INSERT INTO dis.virksomhed (virkNavn, virkMail, virkAdgangKode)
+                VALUES (@firmName, @firmEmail, @firmPassword)
+            `);
+
+            return result.rowsAffected[0];
+
+        } catch (error) {
+            console.error("Fejl ved håndtering af query request til createCustomer metoden", error);
+        };
+    };
+
 };
 
 /*
