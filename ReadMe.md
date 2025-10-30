@@ -2,11 +2,15 @@
 Studiegruppe projekt for cbs HA(it) 3. semester. Projekt med udgangspunkt i Understory som case materiale.
 
 # Opgave-liste
-- Endpoints opsætning
+- Endpoints opsætning (mangler lidt for virksomhederne og et enkelt sted for brugeren)
+
 - SMTP eller twirl protokol setup og oprette en mail
+
 - Frontend logik
+
 - Cloudinare API
-- Afsende data fra forms til databasen i Svergie
+
+- Fix login verifikation
 
 # Køre projektet lokalt
 Der er nogle hemmelige filer som ikke bliver oploadet til github. For at få .env og .js filer.

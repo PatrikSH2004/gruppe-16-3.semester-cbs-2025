@@ -62,7 +62,6 @@ class Database{
     };
 
     async createFirm(firmName, firmMail, firmPassword) {
-        console.log(firmName, firmMail, firmPassword);
         try {
             // Specificer vores query elementer.
             const request = await this.poolconnection.request();
@@ -79,7 +78,27 @@ class Database{
             return result.rowsAffected[0];
 
         } catch (error) {
-            console.error("Fejl ved håndtering af query request til createCustomer metoden", error);
+            console.error("Fejl ved håndtering af query request til createFirm metoden", error);
+        };
+    };
+
+    async findUserMatch(inputMail, inputPassword) {
+        try {
+            // Specificer vores query elementer.
+            const request = await this.poolconnection.request();
+            request.input('inputMail', mssql.VarChar(inputMail.length), inputMail);
+            request.input('inputPassword', mssql.VarChar(inputPassword.length), inputPassword);
+
+            // Afsender vores query request til databasen.
+            const result = await request.query(`
+                SELECT * FROM dis.bruger
+                WHERE brugerMail = @inputMail AND brugerAdgangKode = @inputPassword
+            `);
+
+            return result.recordsets[0];
+
+        } catch (error) {
+            console.error("Fejl ved håndtering af query request til findUserMatch metoden", error);
         };
     };
 

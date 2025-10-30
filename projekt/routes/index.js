@@ -1,38 +1,11 @@
 var express = require('express');
 var router = express.Router();
 var path = require('path');
-const createDatabaseConnection = require('../backend/database/database.js');
-const passwordConfig = require('../backend/database/config.js');
-
-let database;
-
-// Initialize database connection
-(async () => {
-    database = await createDatabaseConnection(passwordConfig);
-})();
 
 router.get('/', function(req, res) {
     res.sendFile(path.join(__dirname, '../public/pages/index.html'));
 });
 
-// Add API endpoints for database operations
-router.post('/api/start', async (req, res) => {
-    try {
-        await database.connect();
-        res.json({ message: "Database connected" });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
-
-router.post('/api/stop', async (req, res) => {
-    try {
-        await database.disconnect();
-        res.json({ message: "Database disconnected" });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
 
 router.get('/customerLogin', function(req, res) {
     res.sendFile(path.join(__dirname, '../public/pages/customer/login.html'));
@@ -68,7 +41,7 @@ router.post('/customerSignUp', async function(req, res) {
         // Vi tjekker om dataen allerede eksisterer (logik funktion).
 
         // Hvis det ikke eksister, sender vi den nye til databasen.
-        await database.createCustomer(req.body.userName, req.body.userMail, req.body.userPassword);
+        await req.app.locals.database.createCustomer(req.body.userName, req.body.userMail, req.body.userPassword);
         res.sendStatus(201);
     } catch (error) {
         res.sendStatus(500);
@@ -80,15 +53,32 @@ router.post('/customerSignUp', async function(req, res) {
 router.post('/firmSignUp', async function(req, res) {
     try {
         // Vi tjekker om dataen allerede eksisterer (logik funktion).
-        console.log(req.body.firmName, req.body.firmMail, req.body.firmPassword);
+        
         // Hvis det ikke eksister, sender vi den nye til databasen.
-        await database.createFirm(req.body.firmName, req.body.firmMail, req.body.firmPassword);
+        await req.app.locals.database.createFirm(req.body.firmName, req.body.firmMail, req.body.firmPassword);
         res.sendStatus(201);
     } catch (error) {
         res.sendStatus(500);
     };
 
     
+});
+
+router.post("/customerLogin", async function(req, res) {
+    try {
+        console.log(req.body.userMail, req.body.userPassword);
+
+        const matches = await req.app.locals.database.findUserMatch(req.body.userMail, req.body.userPassword);
+        /*
+        Stadigvæk noget kode-værk der skal til her, for at få tjekket login oplysninger.
+        
+        */
+        console.log(matches);
+
+        res.sendStatus(200);
+    } catch (error) {
+        res.sendStatus(500);
+    };
 });
 
 module.exports = router; // eksporterer routeren, så den kan bruges i app.js

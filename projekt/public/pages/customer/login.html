@@ -8,14 +8,14 @@
     <div class="container">
         <div class="login-box">
             <h1>Kunde Login</h1>
-            <form class="login-form">
-                <input type="email" placeholder="Email" required>
-                <input type="password" placeholder="Adgangskode" required>
+            <form class="login-form" id = "userLoginForm">
+                <input type="email" id = "userMail" placeholder="Email" required>
+                <input type="password" id = "userPassword" placeholder="Adgangskode" required>
                 <button type="submit" class="login-btn">Kunde Login</button>
             </form>
-            <script src="../../javascript/auth.js"></script>
             <p>Ingen konto? <a href="/customerSignUp">Opret kunde</a></p>
         </div>
     </div>
+    <script src="../../javascript/loginCustomer.js"></script>
 </body>
 </html>
