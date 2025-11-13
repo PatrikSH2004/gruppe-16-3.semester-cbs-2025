@@ -102,6 +102,25 @@ class Database{
         };
     };
 
+    async findFirmMatch(inputMail, inputPassword) {
+        try {
+            // Specificer vores query elementer.
+            const request = await this.poolconnection.request();
+            request.input('inputMail', mssql.VarChar(inputMail.length), inputMail);
+            request.input('inputPassword', mssql.VarChar(inputPassword.length), inputPassword);
+
+            // Afsender vores query request til databasen.
+            const result = await request.query(`
+                SELECT * FROM dis.virksomhed
+                WHERE virkMail = @inputMail AND virkAdgangKode = @inputPassword
+            `);
+
+            return result.recordsets[0];
+
+        } catch (error) {
+            console.error("Fejl ved håndtering af query request til findFirmMatch metoden", error);
+        };
+    };
 };
 
 /*

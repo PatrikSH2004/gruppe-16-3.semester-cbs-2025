@@ -6,7 +6,6 @@ router.get('/', function(req, res) {
     res.sendFile(path.join(__dirname, '../public/pages/index.html'));
 });
 
-
 router.get('/customerLogin', function(req, res) {
     res.sendFile(path.join(__dirname, '../public/pages/customer/login.html'));
 });
@@ -81,4 +80,18 @@ router.post("/customerLogin", async function(req, res) {
     };
 });
 
+router.post("/firmLogin", async function(req, res) {
+    try {
+        const matches = await req.app.locals.database.findFirmMatch(req.body.firmMail, req.body.firmPassword);
+        /*
+        Stadigvæk noget kode-værk der skal til her, for at få tjekket login oplysninger.
+        
+        */
+        console.log(matches);
+
+        res.sendStatus(200);
+    } catch (error) {
+        res.sendStatus(500);
+    };
+});
 module.exports = router; // eksporterer routeren, så den kan bruges i app.js
