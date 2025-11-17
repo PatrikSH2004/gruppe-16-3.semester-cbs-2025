@@ -2,7 +2,6 @@
 Studiegruppe projekt for cbs HA(it) 3. semester. Projekt med udgangspunkt i Understory som case materiale.
 
 # Opgave-liste
-- Endpoints opsætning (mangler lidt for virksomhederne og et enkelt sted for brugeren)
 
 - SMTP eller twirl protokol setup og oprette en mail
 
