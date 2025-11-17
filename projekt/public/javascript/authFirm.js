@@ -1,3 +1,22 @@
+const express = require('express');
+const multer = require('multer');
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const cloudinary = require('../backend/database/cloudinary.js');
+
+const router = express.Router();
+
+// Cloudinary storage
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: "test_uploads", // vises som mappe i Cloudinary
+    allowed_formats: ["jpg", "png", "jpeg"],
+  },
+});
+
+const upload = multer({ storage });
+
+
 document.addEventListener("DOMContentLoaded", () =>{
     // Henter form data
     const formRegisterFirm = document.getElementById("firmRegisterForm");
