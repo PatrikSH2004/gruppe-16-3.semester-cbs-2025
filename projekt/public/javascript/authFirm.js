@@ -1,53 +1,47 @@
-const express = require('express');
-const multer = require('multer');
-const { CloudinaryStorage } = require('multer-storage-cloudinary');
-const cloudinary = require('../backend/database/cloudinary.js');
-
-const router = express.Router();
-
-// Cloudinary storage
-const storage = new CloudinaryStorage({
-  cloudinary,
-  params: {
-    folder: "test_uploads", // vises som mappe i Cloudinary
-    allowed_formats: ["jpg", "png", "jpeg"],
-  },
-});
-
-const upload = multer({ storage });
-
-
-document.addEventListener("DOMContentLoaded", () =>{
-    // Henter form data
+document.addEventListener("DOMContentLoaded", () => {
+    // Tjekker om formen eksisterer på siden.
     const formRegisterFirm = document.getElementById("firmRegisterForm");
+    if (!formRegisterFirm) return;
 
-    // Event når bruger trykker submit
+    // Eventlistener til formen, når alt data er indhentet.
     formRegisterFirm.addEventListener("submit", async (event) => {
         event.preventDefault();
 
+        // Afhenter oplysningerne og data fra brugeren.
         const firmName = document.getElementById("companyName").value;
         const firmMail = document.getElementById("email").value;
         const firmPassword = document.getElementById("password").value;
-        const firmLogo = document.getElementById("companyLogo").value;
+        const logoInput = document.getElementById("companyLogo");
 
-        /* Vi skal først have opsat vores Cloudinary API, så vi kan få et 
-        URL der kan gemmes i databasen. Indtil videre ændre jeg det til at
-        databasen viser null, indtil vi har opsat Cloudinary.*/
+        // Opretter et FormData objekt til at håndtere både tekst og fil upload via binær indhold.
+        const formData = new FormData();
+        formData.append("firmName", firmName);
+        formData.append("firmMail", firmMail);
+        formData.append("firmPassword", firmPassword);
 
-        // Cloudinary API her til fetch request ...
+        // append fil objekt hvis en fil er valgt.
+        if (logoInput && logoInput.files && logoInput.files[0]) {
+            formData.append("companyLogo", logoInput.files[0]);
+        }
 
-        const respons = await fetch("/firmSignUp", {
-            method : "POST",
-            headers : {"Content-Type" : "application/json"},
-            body : JSON.stringify({firmName, firmMail, firmPassword})
-        });
+        // Prøver at sende dataen til serveren via en POST request.
+        try {
+            const respons = await fetch("/firmSignUp", {
+                method: "POST",
+                // Behøver ingen header, da det er multipart/form-data.
+                body: formData
+            });
 
-        //Tjekker om vi har successfuld respons og informer brugeren.
-        if (respons.ok) {
-            alert("Konto er oprettet successfuldt");
-        } else {
-            alert("Noget gik galt. Prøv igen senere");
-        };
-
+            if (respons.ok) {
+                alert("Konto er oprettet succesfuldt");
+                window.location.href = "/firmLogin";
+            } else {
+                const err = await respons.json().catch(()=>({}));
+                alert(err.error || "Noget gik galt. Prøv igen senere");
+            }
+        } catch (e) {
+            console.error(e);
+            alert("Netværksfejl");
+        }
     });
 });

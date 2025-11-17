@@ -2,6 +2,21 @@ var express = require('express');
 var router = express.Router();
 var path = require('path');
 
+// Indsætter multer til filhåndtering på backend controlleren i stedet for frontend siden.
+const multer = require('multer');
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const cloudinary = require('../backend/database/cloudinary.js');
+
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: "firm_logos",
+    allowed_formats: ["jpg", "png", "jpeg"]
+  }
+});
+const upload = multer({ storage });
+
+
 router.get('/', function(req, res) {
     res.sendFile(path.join(__dirname, '../public/pages/index.html'));
 });
@@ -49,18 +64,23 @@ router.post('/customerSignUp', async function(req, res) {
     
 });
 
-router.post('/firmSignUp', async function(req, res) {
+router.post('/firmSignUp', upload.single('companyLogo'), async function(req, res) {
     try {
-        // Vi tjekker om dataen allerede eksisterer (logik funktion).
-        
-        // Hvis det ikke eksister, sender vi den nye til databasen.
-        await req.app.locals.database.createFirm(req.body.firmName, req.body.firmMail, req.body.firmPassword);
-        res.sendStatus(201);
-    } catch (error) {
-        res.sendStatus(500);
-    };
+        // Opsætter data fra vores form
+        const firmName = req.body.firmName;
+        const firmMail = req.body.firmMail;
+        const firmPassword = req.body.firmPassword;
+        const logoUrl = req.file ? (req.file.path || req.file.url || req.file.secure_url) : null;
 
-    
+        // Sender data til databasen, inklusiv logo URL.
+        await req.app.locals.database.createFirm(firmName, firmMail, firmPassword, logoUrl);
+
+        // Returner succes respons-
+        res.status(201).json({ message: "Created"});
+    } catch (error) {
+        console.error("Error in /firmSignUp:", error);
+        res.status(500).json({ error: "Server error" });
+    }
 });
 
 router.post("/customerLogin", async function(req, res) {

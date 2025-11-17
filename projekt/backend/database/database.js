@@ -61,18 +61,19 @@ class Database{
 
     };
 
-    async createFirm(firmName, firmMail, firmPassword) {
+    async createFirm(firmName, firmMail, firmPassword, logoUrl) {
         try {
             // Specificer vores query elementer.
             const request = await this.poolconnection.request();
             request.input('firmName', mssql.VarChar(firmName.length), firmName);
             request.input('firmEmail', mssql.VarChar(firmMail.length), firmMail);
             request.input('firmPassword', mssql.VarChar(firmPassword.length), firmPassword);
+            request.input('logoUrl', mssql.VarChar(logoUrl.length), logoUrl);
 
             // Afsender vores query request til databasen.
             const result = await request.query(`
-                INSERT INTO dis.virksomhed (virkNavn, virkMail, virkAdgangKode)
-                VALUES (@firmName, @firmEmail, @firmPassword)
+                INSERT INTO dis.virksomhed (virkNavn, virkMail, virkAdgangKode, virkBillURL)
+                VALUES (@firmName, @firmEmail, @firmPassword, @logoUrl)
             `);
 
             return result.rowsAffected[0];
