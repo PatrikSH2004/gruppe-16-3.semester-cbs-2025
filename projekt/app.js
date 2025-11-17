@@ -31,6 +31,9 @@ app.use(session({
     var customerRouter = require('./routes/customer');
     var firmRouter = require('./routes/firm');
     var dbRouter = require('./routes/dbRoutes');
+    
+    const uploadTestRoute = require('./routes/uploadTest');
+    app.use("/uploadTest", uploadTestRoute);
 
     app.use('/', indexRouter);
     app.use('/customer', customerRouter);
@@ -42,8 +45,7 @@ app.use(session({
   };
 })();
 
-const uploadTestRoute = require('./routes/uploadTest.js');
-app.use("/uploadTest", uploadTestRoute);
+
 
 
 module.exports = app;

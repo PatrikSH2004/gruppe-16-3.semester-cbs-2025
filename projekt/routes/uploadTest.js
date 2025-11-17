@@ -1,10 +1,14 @@
 const express = require('express');
 const multer = require('multer');
+var path = require('path');
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const cloudinary = require('../backend/database/cloudinary.js');
 
 const router = express.Router();
 
+router.get('/', function(req, res) {
+    res.sendFile(path.join(__dirname, '../public/pages/testUpload.html'));
+});
 
 // Cloudinary storage
 const storage = new CloudinaryStorage({
