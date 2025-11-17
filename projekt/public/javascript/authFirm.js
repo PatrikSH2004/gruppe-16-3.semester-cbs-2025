@@ -6,6 +6,9 @@ document.addEventListener("DOMContentLoaded", () => {
     // Eventlistener til formen, når alt data er indhentet.
     formRegisterFirm.addEventListener("submit", async (event) => {
         event.preventDefault();
+        const createButton= document.getElementById("firmCreateButton");
+        createButton.disabled = true;
+        createButton.textContent = "Opretter...";
 
         // Afhenter oplysningerne og data fra brugeren.
         const firmName = document.getElementById("companyName").value;
