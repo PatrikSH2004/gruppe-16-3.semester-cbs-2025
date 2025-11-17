@@ -42,4 +42,8 @@ app.use(session({
   };
 })();
 
+const uploadTestRoute = require('./routes/uploadTest.js');
+app.use("/uploadTest", uploadTestRoute);
+
+
 module.exports = app;
