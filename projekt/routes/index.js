@@ -114,4 +114,12 @@ router.post("/firmLogin", async function(req, res) {
         res.sendStatus(500);
     };
 });
+
+router.post("/createReward", async function(req, res) {
+    // Der skal modtages to-do data her fra frontend logik fra create-reward.js
+
+    // Bagefter skal payload pakkes ud og sendes til databasen via en ny DB metode.
+});
+
+
 module.exports = router; // eksporterer routeren, så den kan bruges i app.js

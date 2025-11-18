@@ -8,4 +8,8 @@ router.get('/home', function(req, res) {
   res.sendFile(path.join(__dirname, '../public/pages/company/dashboard.html'));
 });
 
+router.get('/create-reward', function(req, res) {
+  res.sendFile(path.join(__dirname, '../public/pages/company/create-reward.html'));
+});
+
 module.exports = router;

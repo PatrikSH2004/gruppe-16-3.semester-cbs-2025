@@ -3,13 +3,17 @@ Studiegruppe projekt for cbs HA(it) 3. semester. Projekt med udgangspunkt i Unde
 
 # Opgave-liste
 
-- SMTP eller twirl protokol setup og oprette en mail
+- SMTP eller twirl protokol setup og oprette en mail (Mikail)
 
-- Frontend logik
+- Frontend logik (Patrik)
 
-- Cloudinare API
+- Cloudinare API (Mikail)
 
-- Fix login verifikation
+- Fix login verifikation (Patrik)
+
+- Tjek alt routing logik igennem ()
+
+- Opret og send reward data til database (Patrik)
 
 # Køre projektet lokalt
 Der er nogle hemmelige filer som ikke bliver oploadet til github. For at få .env og .js filer.

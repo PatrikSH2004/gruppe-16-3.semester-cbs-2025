@@ -6,3 +6,6 @@ function deleteEvent(button) {
     }
 }
 
+document.getElementById('toRewardCreation').addEventListener('click', function() {
+    window.location.href = '/firm/create-reward';
+});
