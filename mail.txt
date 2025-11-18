@@ -1,0 +1,11 @@
+Kære "Kunde X" 
+
+Håber du har nydt dit "eventNavn" Event hos "virksomhedsnavn"
+
+Vi skriver for at minde dig om at du efter "Indløsningsgrænse" events ville opnå "Gevinst" ved dit næste booking 
+
+Du har været til "Progress so far (Antal events)" events indtilvidere. 
+
+Vi håber du nyder dine næste besøg. 
+
+(MÅske link hernede til at booke næste trip????)

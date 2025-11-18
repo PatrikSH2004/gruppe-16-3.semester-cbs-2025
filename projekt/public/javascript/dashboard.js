@@ -6,4 +6,3 @@ function deleteEvent(button) {
     }
 }
 
-// Hvis du har tabs eller flere dashboard-funktioner, kan de tilføjes her

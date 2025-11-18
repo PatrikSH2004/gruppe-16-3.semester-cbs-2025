@@ -51,6 +51,7 @@ document.addEventListener('DOMContentLoaded', function() {
         //Tjekker om vi har successfuld respons og informer brugeren.
         if (response.ok) {
             alert("Konto er oprettet successfuldt");
+            window.location.href = "/customerLogin";
         } else {
             alert("Noget gik galt. Prøv igen senere");
         };
