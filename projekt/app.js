@@ -31,7 +31,9 @@ app.use(session({
     var customerRouter = require('./routes/customer');
     var firmRouter = require('./routes/firm');
     var dbRouter = require('./routes/dbRoutes');
-    
+    var mailRouter = require('./routes/mail');
+
+
     const uploadTestRoute = require('./routes/uploadTest');
     app.use("/uploadTest", uploadTestRoute);
 
@@ -39,6 +41,7 @@ app.use(session({
     app.use('/customer', customerRouter);
     app.use('/firm', firmRouter);
     app.use('/db', dbRouter);
+    app.use("/mail", mailRouter);
 
   } catch (err) {
     console.error(err);

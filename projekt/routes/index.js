@@ -37,7 +37,7 @@ router.get('/firmSignUp', function(req, res) {
     res.sendFile(path.join(__dirname, '../public/pages/company/register.html'));
 });
 
-// tænker vi kan bruge den her til at logge ud. 
+
 router.post('/logout', (req, res) => {
     req.session.destroy((err) => {
         if (err) {

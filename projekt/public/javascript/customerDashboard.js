@@ -11,3 +11,17 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
+
+document.getElementById('logoutButton').addEventListener('click', async (e) => {
+    e.preventDefault();
+    
+    const response = await fetch('/logout', {
+        method: 'POST'
+    });
+
+    if (response.ok) {
+        window.location.href = '/'; 
+    } else {
+        alert('Der opstod en fejl ved logout');
+    }
+});
