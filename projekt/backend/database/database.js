@@ -122,6 +122,33 @@ class Database{
             console.error("Fejl ved håndtering af query request til findFirmMatch metoden", error);
         };
     };
+
+    async opretReward(firmId, name, description, condition, quotas, elligible) {
+        try {
+            // Specificer vores query elementer.
+            const request = await this.poolconnection.request();
+            request.input('firmId', mssql.Int, firmId);
+            request.input('name', mssql.VarChar(name.length), name);
+            request.input('description', mssql.VarChar(description.length), description);
+            request.input('condition', mssql.Int, condition);
+            request.input('elligible', mssql.Int, elligible);
+            if (quotas !== null) {
+                request.input('quotas', mssql.VarChar(quotas.length), quotas);
+            } else {
+                request.input('quotas', mssql.VarChar, null);
+            }
+
+            const result = await request.query(`
+                INSERT INTO dis.reward (virkID, beskrivelse, betingelse, kvoter, eligible, rewardName)
+                VALUES (@firmId, @description, @condition, @quotas, @elligible, @name)
+            `);
+
+            return result.rowsAffected[0];
+
+        } catch (error) {
+            console.error("Fejl ved håndtering af query request til findFirmMatch metoden", error);
+        };
+    };
 };
 
 /*

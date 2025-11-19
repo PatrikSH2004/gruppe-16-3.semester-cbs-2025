@@ -6,6 +6,7 @@ var path = require('path');
 const multer = require('multer');
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const cloudinary = require('../backend/database/cloudinary.js');
+const app = require('../app.js');
 
 const storage = new CloudinaryStorage({
   cloudinary,
@@ -103,22 +104,51 @@ router.post("/customerLogin", async function(req, res) {
 router.post("/firmLogin", async function(req, res) {
     try {
         const matches = await req.app.locals.database.findFirmMatch(req.body.firmMail, req.body.firmPassword);
-        /*
-        Stadigvæk noget kode-værk der skal til her, for at få tjekket login oplysninger.
-        
-        */
-        console.log(matches);
+        if (!matches || matches.length === 0) {
+            return res.status(401).json({ error: "Ugyldig email eller adgangskode" });
+        };
 
-        res.sendStatus(200);
+        const firmId = matches[0].virkID;
+        if (!firmId) {
+            console.error("Kunne ikke finde firm-id:", matches[0]);
+            return res.status(500).json({ error: "Server fejl" });
+        };
+
+        // Regenerer session (for at forhindre session fixation), sæt firmId og gem
+        req.session.regenerate((err) => {
+            if (err) {
+                console.error("Session regenerate error:", err);
+                return res.status(500).json({ error: "Session error" });
+            };
+
+            req.session.firmId = firmId;
+            req.session.userType = "firm";
+
+            req.session.save((err2) => {
+                if (err2) {
+                    console.error("Session save error:", err2);
+                    return res.status(500).json({ error: "Session save error" });
+                }
+                // Send svar når session er persisted
+                return res.status(200).json({ message: "Logged in", firmId });
+            });
+        });
     } catch (error) {
-        res.sendStatus(500);
-    };
+        console.error(error);
+        return res.status(500).json({ error: "Server error" });
+    }
 });
 
 router.post("/createReward", async function(req, res) {
-    // Der skal modtages to-do data her fra frontend logik fra create-reward.js
+    
+    try {
 
-    // Bagefter skal payload pakkes ud og sendes til databasen via en ny DB metode.
+        await req.app.locals.database.opretReward(req.session.firmId, req.body.name, req.body.description, req.body.condition, req.body.quotas, 0);
+        res.sendStatus(200);
+
+    } catch (error) {
+        res.sendStatus(500);
+    };
 });
 
 
