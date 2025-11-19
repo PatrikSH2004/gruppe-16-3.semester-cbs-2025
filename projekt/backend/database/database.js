@@ -132,12 +132,14 @@ class Database{
             request.input('description', mssql.VarChar(description.length), description);
             request.input('condition', mssql.Int, condition);
             request.input('elligible', mssql.Int, elligible);
+            
             if (quotas !== null) {
                 request.input('quotas', mssql.VarChar(quotas.length), quotas);
             } else {
                 request.input('quotas', mssql.VarChar, null);
             }
 
+            // Afsender vores query request til databasen.
             const result = await request.query(`
                 INSERT INTO dis.reward (virkID, beskrivelse, betingelse, kvoter, eligible, rewardName)
                 VALUES (@firmId, @description, @condition, @quotas, @elligible, @name)
@@ -147,6 +149,39 @@ class Database{
 
         } catch (error) {
             console.error("Fejl ved håndtering af query request til findFirmMatch metoden", error);
+        };
+    };
+
+    async getAllRewardsByFirmId(firmId) {
+        try {
+            const request = await this.poolconnection.request();
+            request.input('firmId', mssql.Int, firmId); 
+            
+            const result = await request.query(`
+                SELECT * FROM dis.reward
+                WHERE virkID = @firmId
+            `);
+            
+            return result.recordsets[0];
+        } catch (error) {
+            console.error("Fejl ved håndtering af query request til getAllRewardsByFirmId metoden", error); 
+        };
+    };
+
+    async deleteRewardById(rewardId) {
+        try {
+            const request = await this.poolconnection.request();
+            request.input('rewardId', mssql.Int, rewardId);
+
+            const result = await request.query(`
+                DELETE FROM dis.reward
+                WHERE rewardID = @rewardId
+            `);
+            
+            return result.rowsAffected[0];
+
+        } catch (error) {
+            console.error("Fejl ved håndtering af query request til deleteRewardById metoden", error);
         };
     };
 };

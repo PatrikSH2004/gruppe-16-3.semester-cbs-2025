@@ -93,7 +93,9 @@ router.post("/customerLogin", async function(req, res) {
         Stadigvæk noget kode-værk der skal til her, for at få tjekket login oplysninger.
         
         */
-        console.log(matches);
+        if (!matches || matches.length === 0) {
+            return res.status(401).json({ error: "Ugyldig email eller adgangskode" });
+        };
 
         res.sendStatus(200);
     } catch (error) {
