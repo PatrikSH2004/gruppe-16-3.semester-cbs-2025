@@ -184,6 +184,81 @@ class Database{
             console.error("Fejl ved håndtering af query request til deleteRewardById metoden", error);
         };
     };
+
+    async getCustomerDashboardInfo() {
+        try {
+            const request = await this.poolconnection.request();
+            
+            const result = await request.query(`
+                SELECT r.rewardID, v.virkID,  v.virkBillURL, v.virkNavn, r.betingelse, r.beskrivelse FROM dis.virksomhed v
+                JOIN dis.reward r ON v.virkID = r.virkID
+            `);
+
+            return result.recordsets[0];
+
+        } catch (error) {
+            console.error("Fejl ved håndtering af query request til getCustomerDashboardInfo metoden", error);
+        };
+    };
+
+    async getAllCustomerIds() {
+        try {
+            const request = await this.poolconnection.request();
+            
+            const result = await request.query(`
+                SELECT brugerID FROM dis.bruger
+            `);
+
+            return result.recordsets[0].map(row => row.brugerID);
+        } catch (error) {
+            console.error("Fejl ved håndtering af query request til getAllCustomerIds metoden", error);
+        };
+    };
+
+    async lockUserReward(brugerId, rewardId) {
+        /*
+            Jeg tror som udgangspunkt at denne metode skal ændre sig forholdsmæssigt,
+            idet at den gør det umuligt for en virksomhed at slette en reward, hvis der
+            er brugere som har låst den reward.
+
+            Min tanke er, at vi skal have en metode der først sletter alle brugerRewards
+            for den reward, og derefter sletter rewarden selv. Ellers vil det ikke fungere.
+
+            Yderligere, vi skal have ændret på den her metode, så den kun laver en låsning,
+            hvis brugeren tilmelder sig et event.
+        */
+        try {
+            const request = await this.poolconnection.request();
+            request.input('brugerId', mssql.Int, brugerId);
+            request.input('rewardId', mssql.Int, rewardId);
+            const result = await request.query(`
+                INSERT INTO dis.brugerRewards (brugerID, rewardID, counter, udløbsdato)
+                VALUES (@brugerId, @rewardId, 0, DATEADD(MONTH, 6, GETDATE()))
+            `);
+            return result.rowsAffected[0];
+        } catch (error) {
+            console.error("Fejl ved håndtering af query request til lockUserReward metoden", error);
+        };
+    };
+
+    async getLatestRewardIdByFirmId(firmId) {
+        try {
+            const request = await this.poolconnection.request();
+            request.input('firmId', mssql.Int, firmId);
+            const result = await request.query(`
+                SELECT TOP 1 rewardID FROM dis.reward
+                WHERE virkID = @firmId
+                ORDER BY rewardID DESC
+            `);
+            if (result.recordsets[0].length > 0) {
+                return result.recordsets[0][0].rewardID;
+            } else {
+                return null;
+            }  
+        } catch (error) {
+            console.error("Fejl ved håndtering af query request til getLatestRewardIdByFirmId metoden", error);
+        };
+    };
 };
 
 /*

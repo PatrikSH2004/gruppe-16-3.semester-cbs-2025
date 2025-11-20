@@ -142,10 +142,19 @@ router.post("/firmLogin", async function(req, res) {
 });
 
 router.post("/createReward", async function(req, res) {
-    
+    // Det er som om, den executer db metoder to gange?
     try {
-
         await req.app.locals.database.opretReward(req.session.firmId, req.body.name, req.body.description, req.body.condition, req.body.quotas, 0);
+        // Skal ændre metoden, så det finder den reward med størst tal
+        const newRewardID = await req.app.locals.database.getLatestRewardIdByFirmId(req.session.firmId);
+        const listCustomerID = await req.app.locals.database.getAllCustomerIds();
+
+        /*
+        for(let i = 0 ; i < listCustomerID.length; i++) {
+            await req.app.locals.database.lockUserReward(listCustomerID[i], newRewardID);
+        };
+        */
+       
         res.sendStatus(200);
 
     } catch (error) {

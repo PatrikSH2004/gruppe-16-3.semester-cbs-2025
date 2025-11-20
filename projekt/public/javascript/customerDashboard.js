@@ -25,3 +25,45 @@ document.getElementById('logoutButton').addEventListener('click', async (e) => {
         alert('Der opstod en fejl ved logout');
     }
 });
+/*
+document.addEventListener('DOMContentLoaded', async function() {
+    const response = await fetch('/customer/data');
+    const data = await response.json();
+
+    console.log(data);
+
+    const rewardsContainer = document.getElementById('loyaltyCardsContainer');
+
+    data.rewards.forEach(reward => {
+        const card = document.createElement('div');
+        card.className = 'loyalty-card';
+        card.innerHTML = `
+            <div class="card-top">
+                <img src="${data.info.virkBillURL}" alt="Morning Flow" class="card-image">               
+            </div>
+
+            <div class="card-header">
+                <h3>${data.info.virkNavn}</h3>
+                <label class="toggle-switch">
+                    <span>View Reward?</span>
+                    <input type="checkbox">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <div class="stars">
+                <span class="star active">★</span>
+                <span class="star active">★</span>
+                <span class="star">★</span>
+                <span class="star">★</span>
+                <span class="star">★</span>
+            </div>
+
+            <p class="progress-text">Du mangler 2 bookinger for at opnå: Rabat 20%</p>
+            <div class="card-actions">
+                <button class="action-btn book">Book next trip</button>
+            </div>
+        `;
+    });
+});
+*/
