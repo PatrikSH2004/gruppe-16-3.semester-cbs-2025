@@ -24,3 +24,4 @@ document.getElementById('logoutButton').addEventListener('click', async (e) => {
 document.getElementById('toRewardCreation').addEventListener('click', function() {
     window.location.href = '/firm/create-reward';
 });
+
