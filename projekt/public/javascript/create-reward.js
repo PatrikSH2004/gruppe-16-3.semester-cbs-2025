@@ -36,9 +36,13 @@ function handleSubmitReward(event) {
     console.log('Create reward payload:', payload);
 
     // TODO: send payload to backend API (POST /api/rewards)
-    
+    fetch('/createReward', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(payload)
+    });
 
     // Redirect back to dashboard after creating
-    window.location.href = 'dashboard.html';
+    window.location.href = '/firm/home';
     return false;
 }

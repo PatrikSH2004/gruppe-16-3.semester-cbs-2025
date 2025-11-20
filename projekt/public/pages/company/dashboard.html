@@ -25,28 +25,18 @@
             <table class="dashboard-table">
                 <thead>
                     <tr>
+                        <th>RewardID</th>
                         <th>RewardNavn</th>
                         <th>Betingelser</th>
                         <th>Kvoter</th>
-                        <th>Eligable</th>
+                        <th>Antal Eligable</th>
                         <th>Reward Beskrivelse</th>
                        
         
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>Morning Flow</td>
-                        <td>3 gange</td>
-                        <td>100</td>
-                        <td>45</td>
-                        <td>20% rabat til næste booking</td>
-                        <td>
-                            <button class="delete-btn" onclick="deleteEvent(this)" title="Slet event">
-                                <span class="delete-icon">×</span>
-                            </button>
-                        </td>
-                    </tr>
+                <tbody id = "rewardTable">
+                    <!--Der indsættes HTML her der dynamisk via dashboard.js-->
                 </tbody>
             </table>
         </div>
