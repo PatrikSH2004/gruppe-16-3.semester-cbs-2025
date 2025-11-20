@@ -185,6 +185,8 @@ class Database{
         };
     };
 
+    // Anden del, hvormed der skal håndteres customer dashboard info.
+
     async getCustomerDashboardInfo() {
         try {
             const request = await this.poolconnection.request();
