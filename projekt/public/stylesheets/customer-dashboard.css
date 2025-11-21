@@ -105,7 +105,8 @@ body {
 }
 
 /* Toggle */
-.toggle-switch { display:flex; align-items:center; gap:0.5rem; font-size:0.9rem; color:#666; }
+.toggle-switch { display:flex; align-items:center; gap:0.6rem; font-size:0.95rem; color:#666; }
+.toggle-switch span.toggle-label { color:#777; font-weight:600; }
 .toggle-switch input { display:none; }
 .slider { position:relative; width:40px; height:20px; background:#ccc; border-radius:20px; cursor:pointer; }
 .slider:before { content:""; position:absolute; width:16px; height:16px; background:#fff; border-radius:50%; top:2px; left:2px; transition:0.2s; }
@@ -113,16 +114,44 @@ input:checked + .slider { background:#2e8b57; }
 input:checked + .slider:before { transform: translateX(20px); }
 
 /* Stars / progress */
-.stars { margin:0.6rem 0; color:#ddd; font-size:1.4rem; letter-spacing:2px; text-align:left; }
-.star.active { color:#2e8b57; }
+.stars {
+    margin:0.6rem 0;
+    display:flex;
+    gap:0.6rem;
+    justify-content:flex-start;
+    align-items:center;
+    font-size:1.9rem; /* større og tydeligere */
+    letter-spacing:0;
+    text-align:left;
+}
+.star {
+    color:#e6e6e6; /* inaktiv */
+    transition: color 0.18s ease, transform 0.12s ease;
+    transform-origin: center;
+}
+.star.active {
+    color:#2e8b57;
+    text-shadow: 0 1px 0 rgba(0,0,0,0.06);
+    transform: translateY(-2px);
+}
 
+/* Reward text visibility handling */
 .progress-text {
     color:#666;
     margin:0.6rem 0 1rem 0;
-    font-size:0.96rem;
+    font-size:1.02rem;
     line-height:1.4;
     text-align:center;
+    transition: opacity 0.18s ease;
+    display:block;
 }
+
+/* separate visible / hidden content */
+.reward-visible { display:inline; font-weight:600; color:#2e8b57; }
+.reward-hidden  { display:inline; font-weight:700; letter-spacing:6px; color:#999; }
+
+/* utility hidden class */
+.hidden { display:none !important; }
 
 /* Actions */
 .card-actions { display:flex; justify-content:center; margin-top:0.4rem; }

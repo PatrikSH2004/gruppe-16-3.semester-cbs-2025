@@ -36,27 +36,12 @@ router.post('/bookTrip', async (req, res) => {
             return res.status(401).json({ error: "Ikke logget ind" });
         }
 
-        // GEM BOOKING I DATABASE
-        // await req.app.locals.database.saveBooking(user.id, date, time);
-
         // SEND BOOKING-BEKRÆFTELSE
         const msg = bookingConfirmationTemplate(user.name, date, time);
         await mailToUser(user.email, "Booking bekræftelse", msg);
 
-        /*// TJEK REWARD PROGRESS
-        const progress = await req.app.locals.database.getUserProgress(user.id);
-
-        if (progress.current === progress.limit - 1) {
-            const reminder = rewardReminderTemplate(
-                user.name,
-                progress.eventName,
-                progress.companyName,
-                progress.limit,
-                progress.rewardName,
-                progress.current
-            );
-            await mailToUser(user.email, "Du er tæt på en reward!", reminder);
-        }*/
+        const reminder = rewardReminderTemplate(user.name, "Virksomhedsnavn");
+        await mailToUser(user.email, "Booking bekræftelse", reminder);
 
         res.status(200).json({ message: "Booking gemt og mail sendt!" });
 

@@ -8,6 +8,14 @@ document.addEventListener('DOMContentLoaded', async function () {
     const rewardsContainer = document.getElementById('loyaltyCardsContainer');
     //
     data.info.forEach(info => {
+
+        // best-effort: brug antal stjerner hvis tilgængeligt, ellers 2 som fallback
+        const filled = Number(info.stjerner || info.stars || 2);
+        let starsHTML = '';
+        for (let i = 1; i <= 5; i++) {
+            starsHTML += `<span class="star ${i <= filled ? 'active' : ''}">★</span>`;
+        }
+
         const card = document.createElement('div');
         card.className = 'loyalty-card';
         /*
@@ -24,21 +32,21 @@ document.addEventListener('DOMContentLoaded', async function () {
                     <div class="card-header">
                         <h3>${info.virkNavn}</h3>
                         <label class="toggle-switch">
-                            <span>View Reward?</span>
-                            <input type="checkbox">
+                            <span class="toggle-label">View Reward?</span>
+                            <input type="checkbox" class="reward-toggle" checked>
                             <span class="slider"></span>
                         </label>
                     </div>
 
                     <div class="stars">
-                        <span class="star active">★</span>
-                        <span class="star active">★</span>
-                        <span class="star">★</span>
-                        <span class="star">★</span>
-                        <span class="star">★</span>
+                        ${starsHTML}
                     </div>
 
-                    <p class="progress-text">Du mangler [Beregning her] bookinger for at opnå: ${info.beskrivelse}</p>
+                    <p class="progress-text">
+                        Du mangler <strong>[Beregning her]</strong> bookinger for at opnå:
+                        <span class="reward-visible">${info.beskrivelse}</span>
+                        <span class="reward-hidden hidden">XXX</span>
+                    </p>
                 </div>
 
                 <div class="card-actions">
@@ -47,6 +55,27 @@ document.addEventListener('DOMContentLoaded', async function () {
             </div>
         `;
         rewardsContainer.appendChild(card);
+
+        // wire toggle for dette kort
+        const toggle = card.querySelector('.reward-toggle');
+        const visible = card.querySelector('.reward-visible');
+        const hidden = card.querySelector('.reward-hidden');
+
+         // sørg for at den starter skjult
+        toggle.checked = false;
+
+        // initial state: checked => show real reward, unchecked => show XXX
+        const applyToggle = () => {
+            if (toggle.checked) {
+                visible.classList.remove('hidden');
+                hidden.classList.add('hidden');
+            } else {
+                visible.classList.add('hidden');
+                hidden.classList.remove('hidden');
+            }
+        };
+        applyToggle();
+        toggle.addEventListener('change', applyToggle);
     });
 
 

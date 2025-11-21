@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             <td>${reward.rewardID}</td>
             <td>${reward.rewardName}</td>
             <td>${reward.betingelse} gange</td>
-            <td>${reward.kvoter !== null ? reward.rewardQuotas : 'Ubegrænset'}</td>
+            <td>${reward.kvoter !== null ? reward.kvoter : 'Ubegrænset'}</td>
             <td>${reward.eligible}</td>
             <td>${reward.beskrivelse}</td>
             <td>

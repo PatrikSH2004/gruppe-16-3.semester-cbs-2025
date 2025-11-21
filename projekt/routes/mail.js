@@ -51,14 +51,14 @@ Du har booket en tid den ${dato} kl. ${tid}.
 Vi glæder os til at se dig!
 `;
 
-const rewardReminderTemplate = (kundeNavn, eventNavn, virksomhedNavn, limit, reward, progress) => `
+const rewardReminderTemplate = (kundeNavn, virksomhedNavn) => `
 Kære ${kundeNavn}
 
-Håber du har nydt dit ${eventNavn} event hos ${virksomhedNavn}.
+Håber du har nydt din oplevelse hos ${virksomhedNavn}.
 
-Vi skriver for at minde dig om, at du efter ${limit} besøg opnår: ${reward}.
+Vi skriver for at minde dig om, at du efter XXX besøg opnår: XXX .
 
-Du har været til ${progress} besøg indtil videre.
+Du har været til XXX besøg indtil videre.
 
 Vi håber du nyder dine næste besøg.
 `;
