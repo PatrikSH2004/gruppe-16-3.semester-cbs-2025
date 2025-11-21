@@ -16,9 +16,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(globalLimiter);
-app.set('trust proxy', 1); //Det gør at Express kan se rigtige IP-adresser.
-
 
 app.use(session({
   secret: 'hemmelig-nøgle-som-du-skal-skifte',
@@ -35,6 +32,8 @@ const globalLimiter = rateLimit({
     legacyHeaders: false
 });
 
+app.use(globalLimiter);
+app.set('trust proxy', 1); //Det gør at Express kan se rigtige IP-adresser.
 
 (async () => {
   try {
