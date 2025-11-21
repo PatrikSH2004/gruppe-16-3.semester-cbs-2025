@@ -62,3 +62,11 @@ typings/
 
 # config file
 backend/database/config.js
+
+
+.idea/
+*.iml
+dataSources.local.xml
+dataSources.xml
+data_source_mappings.xml
+workspace.xml
