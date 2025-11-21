@@ -84,24 +84,47 @@ router.post('/firmSignUp', upload.single('companyLogo'), async function(req, res
     }
 });
 
+
 router.post("/customerLogin", async function(req, res) {
     try {
-        console.log(req.body.userMail, req.body.userPassword);
+        console.log("Login payload:", req.body.userMail, req.body.userPassword);
 
-        const matches = await req.app.locals.database.findUserMatch(req.body.userMail, req.body.userPassword);
-        /*
-        Stadigvæk noget kode-værk der skal til her, for at få tjekket login oplysninger.
-        
-        */
+        const matches = await req.app.locals.database.findUserMatch(
+            req.body.userMail,
+            req.body.userPassword
+        );
+
+        // matches kommer som et array af rækker fra database.js
         if (!matches || matches.length === 0) {
             return res.status(401).json({ error: "Ugyldig email eller adgangskode" });
+        }
+
+        const dbUser = matches[0]; // brug første række
+
+        // Map felter fra DB (tilpas hvis dine kolonnenavne er anderledes)
+        const user = {
+            id: dbUser.brugerID ?? dbUser.id,
+            name: dbUser.brugerNavn ?? dbUser.name,
+            email: dbUser.brugerMail ?? dbUser.email
         };
 
-        res.sendStatus(200);
+        // Gem i session og sørg for kun at svare når session er persisted
+        req.session.user = user;
+        req.session.save(err => {
+            if (err) {
+                console.error('Session save failed', err);
+                return res.status(500).json({ error: 'Session error' });
+            }
+            console.log('Session saved for user:', req.session.user);
+            return res.status(200).json({ message: "Login OK" });
+        });
+
     } catch (error) {
+        console.error(error);
         res.sendStatus(500);
-    };
+    }
 });
+
 
 router.post("/firmLogin", async function(req, res) {
     try {

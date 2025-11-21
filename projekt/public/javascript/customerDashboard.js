@@ -1,15 +1,4 @@
 document.addEventListener('DOMContentLoaded', async function () {
-    const bookButtons = document.querySelectorAll('.action-btn.book');
-
-    if (!bookButtons || bookButtons.length === 0) return;
-
-    bookButtons.forEach(btn => {
-        btn.addEventListener('click', function (e) {
-            e.preventDefault();
-            // vi bruger customer/bookTrip som rute for at komme til bookin siden fordi bookTrip routen er under customer i app.js
-            window.location.href = '/customer/bookTrip';
-        });
-    });
 
     const response = await fetch('/customer/data');
     const data = await response.json();
@@ -58,6 +47,16 @@ document.addEventListener('DOMContentLoaded', async function () {
         `;
         rewardsContainer.appendChild(card);
     });
+
+
+        rewardsContainer.addEventListener('click', function (e) {
+        const btn = e.target.closest('.action-btn.book');
+        if (!btn) return;
+        e.preventDefault();
+        // Redirect til din mounted route
+        window.location.href = '/customer/bookTrip';
+    });
+
 });
 
 document.getElementById('logoutButton').addEventListener('click', async (e) => {

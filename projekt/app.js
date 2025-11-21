@@ -41,7 +41,7 @@ app.use(session({
     app.use('/customer', customerRouter);
     app.use('/firm', firmRouter);
     app.use('/db', dbRouter);
-    app.use("/mail", mailRouter);
+    app.use("/mail", mailRouter.router);
 
   } catch (err) {
     console.error(err);

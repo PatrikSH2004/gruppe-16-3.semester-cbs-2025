@@ -10,7 +10,7 @@
   <div class="booking-container">
     <div class="booking-card">
       <h1>📅 Book Din Næste Tur</h1>
-      <p class="subtitle">Vælg en dato og et tidspunkt for din booking hos: XXXX</p>
+      <p class="subtitle">Vælg en dato og et tidspunkt for din booking</p>
 
       <form class="booking-form">
         <!-- Dato -->
@@ -72,6 +72,28 @@ document.addEventListener('DOMContentLoaded', () => {
         })
     );
 });
+
+document.querySelector(".booking-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const date = document.getElementById("date").value;
+    const time = document.getElementById("time").value;
+
+    const response = await fetch('/customer/bookTrip', {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ date, time })
+    });
+
+    const result = await response.json();
+    console.log(result);
+
+    if (response.ok) {
+        alert("Booking gennemført – mail sendt!");
+        window.location.href = "/customer/dashboard";
+    }
+});
+
 
   </script>
 </body>
