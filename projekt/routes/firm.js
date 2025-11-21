@@ -21,13 +21,14 @@ router.get('/create-reward', function(req, res) {
 
 router.delete('/delete-reward', async function (req, res) {
   // Bruger reward ID for at finde og slette den rigtige reward
+  const targetID = Number(req.body.rewardsID);
 
   // Vi bliver først nødt til at slette alle tilknyttede kunders rewards.
-
-  // SKRIV NY METODE HER...
+  await req.app.locals.database.deleteUserRewards(targetID);
 
   // Vi fjerner rewards til sidst fra databasen.
   await req.app.locals.database.deleteRewardById(req.body.rewardsID);
+  
   res.sendStatus(200);
 });
 

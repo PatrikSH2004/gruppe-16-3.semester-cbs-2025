@@ -14,7 +14,6 @@ async function deleteEvent(button) {
         });
 
         row.remove();
-        // Her ville du normalt også sende en request til backend om at slette eventet
 
     };
 };

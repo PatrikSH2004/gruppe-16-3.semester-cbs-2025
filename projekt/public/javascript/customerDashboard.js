@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 </div>
 
                 <div class="card-actions">
-                    <button class="action-btn book">Book next trip</button>
+                    <button class="action-btn book" data-reward-id="${info.rewardID}">Book next trip</button>
                 </div>
             </div>
         `;
@@ -79,11 +79,12 @@ document.addEventListener('DOMContentLoaded', async function () {
     });
 
 
-        rewardsContainer.addEventListener('click', function (e) {
+    rewardsContainer.addEventListener('click', function (e) {
         const btn = e.target.closest('.action-btn.book');
         if (!btn) return;
         e.preventDefault();
-        window.location.href = '/customer/bookTrip';
+        const rewardId = btn.dataset.rewardId;
+        window.location.href = `/customer/bookTrip?rewardId=${encodeURIComponent(rewardId)}`;
     });
 
 });

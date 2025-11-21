@@ -75,16 +75,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
 document.querySelector(".booking-form").addEventListener("submit", async (e) => {
     e.preventDefault();
-    
+
     document.querySelectorAll('.confirm-btn').forEach(btn => btn.disabled = true);
 
     const date = document.getElementById("date").value;
     const time = document.getElementById("time").value;
+  
+    const params = new URLSearchParams(window.location.search);
+    const rewardId = params.get('rewardId');
 
     const response = await fetch('/customer/bookTrip', {
-        method: "POST",
+        method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ date, time })
+        body: JSON.stringify({ rewardId, date, time })
     });
 
     const result = await response.json();

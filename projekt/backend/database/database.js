@@ -218,17 +218,6 @@ class Database{
     };
 
     async lockUserReward(brugerId, rewardId) {
-        /*
-            Jeg tror som udgangspunkt at denne metode skal ændre sig forholdsmæssigt,
-            idet at den gør det umuligt for en virksomhed at slette en reward, hvis der
-            er brugere som har låst den reward.
-
-            Min tanke er, at vi skal have en metode der først sletter alle brugerRewards
-            for den reward, og derefter sletter rewarden selv. Ellers vil det ikke fungere.
-
-            Yderligere, vi skal have ændret på den her metode, så den kun laver en låsning,
-            hvis brugeren tilmelder sig et event.
-        */
         try {
             const request = await this.poolconnection.request();
             request.input('brugerId', mssql.Int, brugerId);
@@ -259,6 +248,36 @@ class Database{
             }  
         } catch (error) {
             console.error("Fejl ved håndtering af query request til getLatestRewardIdByFirmId metoden", error);
+        };
+    };
+
+    async deleteUserRewards(targetID) {
+        try {
+            const request = await this.poolconnection.request();
+            request.input('rewardId', mssql.Int, targetID);
+            const result = await request.query(`
+                DELETE FROM dis.brugerRewards
+                WHERE rewardID = @rewardId
+            `);
+            return result.rowsAffected[0];
+        } catch (error) {
+            console.error("Fejl ved håndtering af query request til deleteUserRewards metoden", error);
+        };
+    };
+
+    async counter(brugerId, rewardId) {
+        try {
+            const request = await this.poolconnection.request();
+            request.input('brugerId', mssql.Int, brugerId);
+            request.input('rewardId', mssql.Int, rewardId);
+            const result = await request.query(`
+                UPDATE dis.brugerRewards
+                SET counter = counter + 1
+                WHERE brugerID = @brugerId AND rewardID = @rewardId
+            `);
+            return result.rowsAffected[0];
+        } catch (error) {
+            console.error("Fejl ved håndtering af query request til counter metoden", error);
         };
     };
 };

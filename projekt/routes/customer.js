@@ -2,6 +2,7 @@
 var express = require('express');
 var router = express.Router();
 var path = require('path');
+const app = require('../app.js');
 
 
 // IMPORTER MAIL-SERVICE
@@ -23,9 +24,20 @@ router.get('/bookTrip', function(req, res) {
 });
 
 
-router.post('/bookTrip', async (req, res) => {
+router.put('/bookTrip', async (req, res) => {
     try {
         const { date, time } = req.body;
+
+        // Starter med at få counteren til at stige med en.
+        await req.app.locals.database.counter(req.session.user.id, req.body.rewardId);
+
+        // Efterfølgende skal vi have noget mailværk her.
+
+        // Start først med at hente "betingelse" fra dis.reward og "counter" fra dis.brugerRewards.
+
+        // Fratræk værdierne for at afgøre, hvor mange bookninger de mangler for deres reward.
+
+        // Brug forskellen på tallet til at sende en mail til brugeren om deres opdaterede status.
 
         console.log("Received booking:", date, time);
         // Hent brugerdata fra session
