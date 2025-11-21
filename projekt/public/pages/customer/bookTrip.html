@@ -75,6 +75,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 document.querySelector(".booking-form").addEventListener("submit", async (e) => {
     e.preventDefault();
+    
+    document.querySelectorAll('.confirm-btn').forEach(btn => btn.disabled = true);
 
     const date = document.getElementById("date").value;
     const time = document.getElementById("time").value;

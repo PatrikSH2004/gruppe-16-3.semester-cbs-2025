@@ -101,14 +101,14 @@ router.post("/customerLogin", async function(req, res) {
 
         const dbUser = matches[0]; // brug første række
 
-        // Map felter fra DB (tilpas hvis dine kolonnenavne er anderledes)
+        // Map felter fra DB 
         const user = {
             id: dbUser.brugerID ?? dbUser.id,
             name: dbUser.brugerNavn ?? dbUser.name,
             email: dbUser.brugerMail ?? dbUser.email
         };
 
-        // Gem i session og sørg for kun at svare når session er persisted
+        // Gem i session 
         req.session.user = user;
         req.session.save(err => {
             if (err) {
