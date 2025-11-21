@@ -3,6 +3,8 @@ var path = require('path');
 const session = require('express-session');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const rateLimit = require('express-rate-limit');
+
 
 const createDatabaseConnection = require('./backend/database/database.js');
 const passwordConfig = require('./backend/database/config.js');
@@ -14,6 +16,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(globalLimiter);
+app.set('trust proxy', 1); //Det gør at Express kan se rigtige IP-adresser.
+
 
 app.use(session({
   secret: 'hemmelig-nøgle-som-du-skal-skifte',
@@ -21,6 +26,15 @@ app.use(session({
   saveUninitialized: true,
   cookie: { secure: false }
 }));
+
+const globalLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,   // 15 minutter
+    max: 100,                   // max 100 requests pr. IP
+    message: "For mange forespørgsler – prøv igen senere.",
+    standardHeaders: true,
+    legacyHeaders: false
+});
+
 
 (async () => {
   try {

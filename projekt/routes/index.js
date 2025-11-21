@@ -50,8 +50,16 @@ router.post('/logout', (req, res) => {
     });
 });
 
+const rateLimit = require('express-rate-limit'); //rate limiter import til login 
+
+const loginLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutter
+    max: 5, // Max 5 loginforsøg
+    message: "For mange loginforsøg – prøv igen senere."
+});
+
 // Post request til at sende customer data.
-router.post('/customerSignUp', async function(req, res) {
+router.post('/customerSignUp', loginLimiter, async function(req, res) {
     try {
         // Vi tjekker om dataen allerede eksisterer (logik funktion).
 
