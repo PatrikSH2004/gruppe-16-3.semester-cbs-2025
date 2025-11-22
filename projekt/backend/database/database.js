@@ -280,6 +280,37 @@ class Database{
             console.error("Fejl ved håndtering af query request til counter metoden", error);
         };
     };
+
+    async getNewestCustomerId() {
+        try {
+            const request = await this.poolconnection.request();
+
+            const result = await request.query(`
+                SELECT MAX(brugerID) AS lastID FROM dis.bruger;
+            `);
+
+            return result.recordsets[0];
+
+        } catch (error) {
+            console.error("Fejl ved håndtering af query request til getNewestCustomerId metoden", error);
+        };
+    };
+
+    async getAllRewardId() {
+        try {
+            const request = await this.poolconnection.request();
+
+            const result = await request.query(`
+                SELECT rewardID FROM dis.reward;
+            `);
+
+            return result.recordsets[0];
+
+        } catch (error) {
+            console.error("Fejl ved håndtering af query request til getAllRewardId metoden", error);
+        };
+    };
+
 };
 
 /*

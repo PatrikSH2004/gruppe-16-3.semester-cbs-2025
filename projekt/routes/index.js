@@ -65,6 +65,17 @@ router.post('/customerSignUp', loginLimiter, async function(req, res) {
 
         // Hvis det ikke eksister, sender vi den nye til databasen.
         await req.app.locals.database.createCustomer(req.body.userName, req.body.userMail, req.body.userPassword);
+
+        // Vi skal have tilføjet en counter til brugeren, efter antal rewards. Vi starter med at hente 
+        const idResults = await req.app.locals.database.getNewestCustomerId();
+
+        // Vi henter en liste med reward id'er.
+        const idRewards = await req.app.locals.database.getAllRewardId();
+
+        for (let i = 0 ; i < idRewards.length ; i++) {
+            await req.app.locals.database.lockUserReward(idResults[0].lastID, idRewards[i].rewardID);
+        };
+
         res.sendStatus(201);
     } catch (error) {
         res.sendStatus(500);
