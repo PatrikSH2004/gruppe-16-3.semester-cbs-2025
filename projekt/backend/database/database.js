@@ -328,6 +328,36 @@ class Database{
         };
     };
 
+    async counterAndCondition(brugerId, rewardId) {
+        try {
+            const request = await this.poolconnection.request();
+            request.input('brugerId', mssql.Int, brugerId);
+            request.input('rewardId', mssql.Int, rewardId);
+            const result = await request.query(`
+                SELECT br.counter, r.betingelse FROM dis.brugerRewards br
+                JOIN dis.reward r ON br.rewardID = r.rewardID
+                WHERE br.brugerID = @brugerId AND br.rewardID = @rewardId;
+            `);
+            return result.recordsets[0];
+        } catch (error) {
+            console.error("Fejl ved håndtering af query request til counterAndCondition metoden", error);
+        };
+    };
+
+    async deleteUserReward(brugerId, rewardId) {
+        try {
+            const request = await this.poolconnection.request();
+            request.input('brugerId', mssql.Int, brugerId);
+            request.input('rewardId', mssql.Int, rewardId);
+            const result = await request.query(`
+                DELETE FROM dis.brugerRewards
+                WHERE brugerID = @brugerId AND rewardID = @rewardId;
+            `);
+            return result.rowsAffected[0];
+        } catch (error) {
+            console.error("Fejl ved håndtering af query request til deleteUserReward metoden", error);
+        };
+    };
 };
 
 /*

@@ -39,28 +39,43 @@ router.put('/bookTrip', async (req, res) => {
         // Efterfølgende skal vi have noget mailværk her.
 
         // Start først med at hente "betingelse" fra dis.reward og "counter" fra dis.brugerRewards.
-
+        const result = await req.app.locals.database.counterAndCondition(req.session.user.id, req.body.rewardId);
+        
         // Fratræk værdierne for at afgøre, hvor mange bookninger de mangler for deres reward.
+        console.log(result[0].counter, result[0].betingelse);
+        const forskel = result[0].betingelse - result[0].counter;
 
-        // Brug forskellen på tallet til at sende en mail til brugeren om deres opdaterede status.
+        // Afgør, om reward skal slettes eller ej.
+        if (forskel < 0) {
+            // Hvis der er flere bookinger end betingelse, så slet reward, og send mail om at reward er aktiv.
+            await req.app.locals.database.deleteUserReward(req.session.user.id, req.body.rewardId);
+            
+            // SEND MAIL OM AT REWARD ER AKTIVERET
+                // SKRIV HER...
 
-        console.log("Received booking:", date, time);
-        // Hent brugerdata fra session
-        const user = req.session.user;
-        console.log("hitting booking route", user);
 
-        if (!user) {
-            return res.status(401).json({ error: "Ikke logget ind" });
-        }
+            res.status(200).json({ message: "Booking gemt og mail sendt!" });
+        } else {
+            // Hvis der er færre bookinger end betingelse, så bruger vi samme algoritme som før.
+            console.log("Received booking:", date, time);
+            // Hent brugerdata fra session
+            const user = req.session.user;
+            console.log("hitting booking route", user);
 
-        // SEND BOOKING-BEKRÆFTELSE
-        const msg = bookingConfirmationTemplate(user.name, date, time);
-        await mailToUser(user.email, "Booking bekræftelse", msg);
+            if (!user) {
+                return res.status(401).json({ error: "Ikke logget ind" });
+            }
 
-        const reminder = rewardReminderTemplate(user.name, "Virksomhedsnavn");
-        await mailToUser(user.email, "Booking bekræftelse", reminder);
+            // SEND BOOKING-BEKRÆFTELSE
+            const msg = bookingConfirmationTemplate(user.name, date, time);
+            await mailToUser(user.email, "Booking bekræftelse", msg);
 
-        res.status(200).json({ message: "Booking gemt og mail sendt!" });
+            const reminder = rewardReminderTemplate(user.name, "Virksomhedsnavn");
+            await mailToUser(user.email, "Booking bekræftelse", reminder);
+
+            res.status(200).json({ message: "Booking gemt og mail sendt!" });
+
+        };
 
     } catch (error) {
         console.error(error);
