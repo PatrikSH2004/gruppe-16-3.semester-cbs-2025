@@ -1,27 +1,36 @@
 document.addEventListener('DOMContentLoaded', async function () {
 
-    const response = await fetch('/customer/data');
+    const response = await fetch('/customer/data', { credentials: 'same-origin' });
     const data = await response.json();
 
-    console.log(data);
+    console.log('info:', data.info, 'counters:', data.counters);
 
     const rewardsContainer = document.getElementById('loyaltyCardsContainer');
-    //
+    
     data.info.forEach(info => {
 
-        // best-effort: brug antal stjerner hvis tilgængeligt, ellers 2 som fallback
-        const filled = Number(info.stjerner || info.stars || 2);
+        // Vi finder den rigtige counter for den tilsvarende reward med ens reward ID'er.
+        const counterObj = data.counters.find(c => c.rewardID === info.rewardID);
+        const counter = Number(counterObj ? counterObj.counter : 0);
+        const betingelse = Number(info.betingelse || 1);
+
+        // Angiver hvor mange fyldte stjerner der skal vises ud af de samlede counter og betingelse.
+        const filledStars = Math.min(betingelse, counter);
+
+        console.log(`${info.virkNavn}: counter=${counter}, betingelse=${betingelse}, filledStars=${filledStars}`);
+
+        // HTML element der ligger samlede antal stjerner ud, og makere dem som aktiv ved filledStars
         let starsHTML = '';
-        for (let i = 1; i <= 5; i++) {
-            starsHTML += `<span class="star ${i <= filled ? 'active' : ''}">★</span>`;
+        for (let i = 1; i <= betingelse; i++) {
+            starsHTML += `<span class="star ${i <= filledStars ? 'active' : ''}">★</span>`;
         }
+
+        // Remaining angiver til brugeren hvor mange bookninger de mangler
+        const remaining = Math.max(0, betingelse - counter);
 
         const card = document.createElement('div');
         card.className = 'loyalty-card';
-        /*
-            Kortet her angiver ikke hvor mange bookninger der mangler for at opnå reward.
-            Det er noget som skal beregnes og indsættes.
-        */
+        
         card.innerHTML = `
             <div class="card-top">
                 <img src="${info.virkBillURL}" alt="${info.virkNavn}" class="card-image">               
@@ -43,7 +52,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                     </div>
 
                     <p class="progress-text">
-                        Du mangler <strong>[Beregning her]</strong> bookinger for at opnå:
+                        Du mangler <strong>${remaining}</strong> bookinger for at opnå:
                         <span class="reward-visible">${info.beskrivelse}</span>
                         <span class="reward-hidden hidden">XXX</span>
                     </p>
@@ -56,15 +65,13 @@ document.addEventListener('DOMContentLoaded', async function () {
         `;
         rewardsContainer.appendChild(card);
 
-        // wire toggle for dette kort
+        // wire toggle for this card
         const toggle = card.querySelector('.reward-toggle');
         const visible = card.querySelector('.reward-visible');
         const hidden = card.querySelector('.reward-hidden');
 
-         // sørg for at den starter skjult
         toggle.checked = false;
 
-        // initial state: checked => show real reward, unchecked => show XXX
         const applyToggle = () => {
             if (toggle.checked) {
                 visible.classList.remove('hidden');
@@ -77,7 +84,6 @@ document.addEventListener('DOMContentLoaded', async function () {
         applyToggle();
         toggle.addEventListener('change', applyToggle);
     });
-
 
     rewardsContainer.addEventListener('click', function (e) {
         const btn = e.target.closest('.action-btn.book');

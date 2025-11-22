@@ -15,8 +15,13 @@ router.get('/dashboard', function(req, res) {
 });
 
 router.get('/data', async function (req, res) {
-    const info = await req.app.locals.database.getCustomerDashboardInfo();
-    res.status(200).json({info : info});
+    // Metode til at hente info for  r.rewardID, v.virkID,  v.virkBillURL, v.virkNavn, r.betingelse, r.beskrivelse
+    const info = await req.app.locals.database.getCustomerDashboardInfo(); // Betingelse er vigtig
+
+    // Vi skal også hente counterne for alle brugereRewards med bestem brugerID
+    const counters = await req.app.locals.database.countersById(req.session.user.id);
+
+    res.status(200).json({info : info, counters : counters});
 });
 
 router.get('/bookTrip', function(req, res) {

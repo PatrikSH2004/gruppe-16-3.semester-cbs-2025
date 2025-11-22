@@ -311,6 +311,23 @@ class Database{
         };
     };
 
+    async countersById(brugerId) {
+        try {
+            const request = await this.poolconnection.request();
+            request.input('brugerId', mssql.Int, brugerId);
+            
+            const result = await request.query(`
+                SELECT rewardID, counter FROM dis.brugerRewards
+                WHERE brugerID = @brugerId;
+            `);
+
+            return result.recordsets[0];
+
+        } catch (error) {
+            console.error("Fejl ved håndtering af query request til countersById metoden", error);
+        };
+    };
+
 };
 
 /*
