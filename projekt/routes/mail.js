@@ -8,6 +8,9 @@ const transporter = nodemailer.createTransport({
     user: "supersejt.disprojekt.2025@gmail.com",
     pass: "irec tngc kmpn odny",
   },
+  tls: {
+    rejectUnauthorized: false // <-- tillad selvsigneret certifikat
+  }
 });
 
 transporter.verify((error) => {
