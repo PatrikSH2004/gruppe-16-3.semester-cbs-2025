@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                     </div>
 
                     <div class="card-actions">
-                        <button class="action-btn book" data-reward-id="${info.rewardID}">Book next trip</button>
+                        <button class="action-btn book" data-reward-id="${info.rewardID}" data-virk-navn="${info.virkNavn}" data-reward="${info.beskrivelse}">Book next trip</button>
                     </div>
                 </div>
             `;
@@ -96,7 +96,9 @@ document.addEventListener('DOMContentLoaded', async function () {
         if (!btn) return;
         e.preventDefault();
         const rewardId = btn.dataset.rewardId;
-        window.location.href = `/customer/bookTrip?rewardId=${encodeURIComponent(rewardId)}`;
+        const virkNavn = btn.dataset.virkNavn;
+        const reward = btn.dataset.reward;  // Extract the reward
+        window.location.href = `/customer/bookTrip?rewardId=${encodeURIComponent(rewardId)}&virkNavn=${encodeURIComponent(virkNavn)}&reward=${encodeURIComponent(reward)}`;
     });
 
 });

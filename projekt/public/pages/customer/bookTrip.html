@@ -83,11 +83,12 @@ document.querySelector(".booking-form").addEventListener("submit", async (e) => 
   
     const params = new URLSearchParams(window.location.search);
     const rewardId = params.get('rewardId');
+    const reward = params.get('reward');  // Extract the reward description
 
     const response = await fetch('/customer/bookTrip', {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ rewardId, date, time })
+        body: JSON.stringify({ rewardId, date, time, reward })  // Include reward
     });
 
     const result = await response.json();

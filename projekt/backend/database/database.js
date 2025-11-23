@@ -358,6 +358,24 @@ class Database{
             console.error("Fejl ved håndtering af query request til deleteUserReward metoden", error);
         };
     };
+
+    async getVirkNavnByRewardId(rewardId) {
+        try {
+            const request = await this.poolconnection.request();
+            request.input('rewardId', mssql.Int, rewardId);
+            
+            const result = await request.query(`
+                SELECT v.virkNavn FROM dis.virksomhed v
+                JOIN dis.reward r ON v.virkID = r.virkID
+                WHERE r.rewardID = @rewardId
+            `);
+
+            return result.recordsets[0][0]?.virkNavn || null;
+
+        } catch (error) {
+            console.error("Fejl ved håndtering af query request til getVirkNavnByRewardId metoden", error);
+        };
+    };
 };
 
 /*

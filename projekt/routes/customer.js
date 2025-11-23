@@ -8,7 +8,7 @@ const app = require('../app.js');
 // IMPORTER MAIL-SERVICE
 const mail = require('./mail');
 
-const { bookingConfirmationTemplate, rewardReminderTemplate, mailToUser, router: mailRouter } = mail;
+const { bookingConfirmationTemplate, rewardReminderTemplate,rewardTemplate, mailToUser, router: mailRouter } = mail;
 
 router.get('/dashboard', function(req, res) {
     res.sendFile(path.join(__dirname, '../public/pages/customer/dashboard.html'));
@@ -31,50 +31,42 @@ router.get('/bookTrip', function(req, res) {
 
 router.put('/bookTrip', async (req, res) => {
     try {
-        const { date, time } = req.body;
+        const { date, time, virkNavn, rewardId, reward } = req.body;
 
         // Starter med at få counteren til at stige med en.
-        await req.app.locals.database.counter(req.session.user.id, req.body.rewardId);
-
-        // Efterfølgende skal vi have noget mailværk her.
+        await req.app.locals.database.counter(req.session.user.id, rewardId);
 
         // Start først med at hente "betingelse" fra dis.reward og "counter" fra dis.brugerRewards.
-        const result = await req.app.locals.database.counterAndCondition(req.session.user.id, req.body.rewardId);
+        const result = await req.app.locals.database.counterAndCondition(req.session.user.id, rewardId);
         
-        // Fratræk værdierne for at afgøre, hvor mange bookninger de mangler for deres reward.
-        console.log(result[0].counter, result[0].betingelse);
         const forskel = result[0].betingelse - result[0].counter;
 
-        // Afgør, om reward skal slettes eller ej.
+        // Hvis virkNavn ikke sendes, hent det fra databasen
+        let virksomhedNavn = virkNavn;
+        if (!virksomhedNavn) {
+            virksomhedNavn = await req.app.locals.database.getVirkNavnByRewardId(rewardId);
+        }
+
         if (forskel < 0) {
-            // Hvis der er flere bookinger end betingelse, så slet reward, og send mail om at reward er aktiv.
-            await req.app.locals.database.deleteUserReward(req.session.user.id, req.body.rewardId);
-            
-            // SEND MAIL OM AT REWARD ER AKTIVERET
-                // SKRIV HER...
+            const user = req.session.user;
+            const rewardMail = rewardTemplate(user.name, date, time, reward);
+            await mailToUser(user.email, "Reward påmindelse", rewardMail);
 
-
+            await req.app.locals.database.deleteUserReward(req.session.user.id, rewardId);
             res.status(200).json({ message: "Booking gemt og mail sendt!" });
         } else {
-            // Hvis der er færre bookinger end betingelse, så bruger vi samme algoritme som før.
-            console.log("Received booking:", date, time);
-            // Hent brugerdata fra session
             const user = req.session.user;
-            console.log("hitting booking route", user);
-
             if (!user) {
                 return res.status(401).json({ error: "Ikke logget ind" });
             }
 
-            // SEND BOOKING-BEKRÆFTELSE
             const msg = bookingConfirmationTemplate(user.name, date, time);
             await mailToUser(user.email, "Booking bekræftelse", msg);
 
-            const reminder = rewardReminderTemplate(user.name, "Virksomhedsnavn");
-            await mailToUser(user.email, "Booking bekræftelse", reminder);
+            const reminder = rewardReminderTemplate(user.name, virksomhedNavn, forskel);
+            await mailToUser(user.email, "Reward påmindelse", reminder);
 
             res.status(200).json({ message: "Booking gemt og mail sendt!" });
-
         };
 
     } catch (error) {

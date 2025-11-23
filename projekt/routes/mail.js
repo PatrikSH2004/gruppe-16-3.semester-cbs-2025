@@ -54,21 +54,35 @@ Du har booket en tid den ${dato} kl. ${tid}.
 Vi glæder os til at se dig!
 `;
 
-const rewardReminderTemplate = (kundeNavn, virksomhedNavn) => `
+const rewardReminderTemplate = (kundeNavn, virksomhedNavn, remaining) => `
 Kære ${kundeNavn}
 
 Håber du har nydt din oplevelse hos ${virksomhedNavn}.
 
-Vi skriver for at minde dig om, at du efter XXX besøg opnår: XXX .
-
-Du har været til XXX besøg indtil videre.
+Du mangler ${remaining} bookinger for at opnå din reward.
 
 Vi håber du nyder dine næste besøg.
 `;
+
+const rewardTemplate = (kundeNavn, dato, tid, reward) => `
+Kære ${kundeNavn}
+
+Tak for din booking!
+
+Vi ville gerne informere dig om, at din reward er blevet aktiveret!
+
+Du har optjent ${reward} 
+
+Du har booket en tid den ${dato} kl. ${tid}.
+
+Vi glæder os til at se dig!
+`;
+
 
 module.exports = {
     bookingConfirmationTemplate,
     rewardReminderTemplate,
     mailToUser,
+    rewardTemplate,
     router
 };
