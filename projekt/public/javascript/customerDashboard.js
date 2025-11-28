@@ -55,10 +55,15 @@ document.addEventListener('DOMContentLoaded', async function () {
                         </div>
 
                         <p class="progress-text">
-                            Du mangler <strong>${remaining}</strong> bookinger for at opnå:
+                            ${
+                                remaining > 0
+                                ? `Du mangler <strong>${remaining}</strong> bookninger for at opnå:`
+                                : `Du har opnået:`
+                            }
                             <span class="reward-visible">${info.beskrivelse}</span>
                             <span class="reward-hidden hidden">XXX</span>
                         </p>
+
                     </div>
 
                     <div class="card-actions">
