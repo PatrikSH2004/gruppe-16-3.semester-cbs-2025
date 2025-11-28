@@ -80,6 +80,34 @@ body {
     border-bottom-left-radius: 14px;
 }
 
+.card-top {
+    width: 100%;
+    aspect-ratio: 16 / 9;   /* giver en pæn billed-ratio */
+    overflow: hidden;
+    border-radius: 14px 14px 0 0;
+}
+
+.card-top {
+    background: #00ff00 !important;
+}
+
+
+/*************************/
+
+.card-top {
+  height: 200px !important;
+}
+.card-top img.card-image {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  opacity: 1 !important;
+}
+
+
+
+
 /* Right: content */
 .card-content {
     flex: 1 1 60%;

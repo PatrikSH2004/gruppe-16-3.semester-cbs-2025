@@ -3,6 +3,13 @@
 document.addEventListener("DOMContentLoaded", function() {
     const form = document.querySelector('.event-form');
     if (form) form.addEventListener('submit', handleSubmitReward);
+    
+    const closeBtn = document.getElementById('closeModalBtn');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+            window.location.href = '/firm/home';
+        });
+    }
 });
 
 function handleSubmitReward(event) {

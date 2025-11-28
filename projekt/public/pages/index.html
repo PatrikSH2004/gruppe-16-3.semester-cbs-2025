@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -13,17 +14,18 @@
         <div class="login-options">
             <div class="login-box">
                 <h2>Company Portal</h2>
-                <button class="login-btn" onclick="window.location.href='/firmLogin'">Company Login</button>
-                <button class="signup-btn" onclick="window.location.href='/firmSignUp'">Register Company</button>
+                <button class="login-btn" id="companyLoginBtn">Company Login</button>
+                <button class="signup-btn" id="companySignUpBtn">Register Company</button>
             </div>
 
             <div class="login-box">
                 <h2>Customer Portal</h2>
-                <button class="login-btn" onclick="window.location.href='/customerLogin'">Customer Login</button>
-                <button class="signup-btn" onclick="window.location.href='/customerSignUp'">Register Customer</button>
+                <button class="login-btn" id="customerLoginBtn">Customer Login</button>
+                <button class="signup-btn" id="customerSignUpBtn">Register Customer</button>
             </div>
         </div>
     </div>
+    <script src="/javascript/index.js" defer></script>
 </body>
 
 </html>

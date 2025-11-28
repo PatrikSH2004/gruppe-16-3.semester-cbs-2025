@@ -41,66 +41,6 @@
     </div>
   </div>
 
-  <script>
-    // Simpel preview funktionalitet
-    const dateInput = document.getElementById("date");
-    const timeInput = document.getElementById("time");
-    const preview = document.getElementById("preview");
-
-    function updatePreview() {
-      const date = dateInput.value;
-      const time = timeInput.value;
-      if (date && time) {
-        const formattedDate = new Date(date).toLocaleDateString("da-DK", {
-          day: "2-digit", month: "long", year: "numeric"
-        });
-        preview.textContent = `Du har valgt: ${formattedDate} kl. ${time}`;
-      } else {
-        preview.textContent = "Vælg en dato og et tidspunkt";
-      }
-    }
-
-    dateInput.addEventListener("change", updatePreview);
-    timeInput.addEventListener("change", updatePreview);
-
-
-document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.cancel-btn').forEach(btn =>
-        btn.addEventListener('click', (e) => {
-            e.preventDefault();
-            window.location.href = '/customer/dashboard';
-        })
-    );
-});
-
-document.querySelector(".booking-form").addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    document.querySelectorAll('.confirm-btn').forEach(btn => btn.disabled = true);
-
-    const date = document.getElementById("date").value;
-    const time = document.getElementById("time").value;
-  
-    const params = new URLSearchParams(window.location.search);
-    const rewardId = params.get('rewardId');
-    const reward = params.get('reward');  // Extract the reward description
-
-    const response = await fetch('/customer/bookTrip', {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ rewardId, date, time, reward })  // Include reward
-    });
-
-    const result = await response.json();
-    console.log(result);
-
-    if (response.ok) {
-        alert("Booking gennemført – mail sendt!");
-        window.location.href = "/customer/dashboard";
-    }
-});
-
-
-  </script>
+  <script src="../../javascript/bookTrip.js" defer></script>
 </body>
 </html>

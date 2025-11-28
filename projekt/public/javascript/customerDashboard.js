@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         
             card.innerHTML = `
                 <div class="card-top">
-                    <img src="${info.virkBillURL}" alt="${info.virkNavn}" class="card-image">               
+                    <img src="${info.virkBillURL.trim()}" alt="${info.virkNavn}" class="card-image">
                 </div>
 
                 <div class="card-content">
@@ -98,6 +98,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         const rewardId = btn.dataset.rewardId;
         const virkNavn = btn.dataset.virkNavn;
         const reward = btn.dataset.reward;  // Extract the reward
+        console.log("Clicked rewardId:", rewardId);
         window.location.href = `/customer/bookTrip?rewardId=${encodeURIComponent(rewardId)}&virkNavn=${encodeURIComponent(virkNavn)}&reward=${encodeURIComponent(reward)}`;
     });
 

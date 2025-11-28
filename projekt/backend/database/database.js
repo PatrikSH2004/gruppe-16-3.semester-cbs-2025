@@ -47,11 +47,11 @@ class Database{
         try {
             // Specificer vores query elementer.
             const request = await this.poolconnection.request();
-            request.input('brugerName', mssql.VarChar(name.length), name);
+            request.input('brugerName', mssql.VarChar(255), name);
             const encryptedEmail = encrypt(email); // Krypterer email før lagring, symetrisk kryptering
-            request.input('brugerEmail', mssql.VarChar(encryptedEmail.length), encryptedEmail);
+            request.input('brugerEmail', mssql.VarChar(255), encryptedEmail);
             const hashedPassword = await bcrypt.hash(password, 10); //10 salt runder 
-            request.input('brugerPassword', mssql.VarChar(hashedPassword.length), hashedPassword);
+            request.input('brugerPassword', mssql.VarChar(255), hashedPassword);
 
 
             // Afsender vores query request til databasen.
@@ -72,11 +72,11 @@ class Database{
         try {
             // Specificer vores query elementer.
             const request = await this.poolconnection.request();
-            request.input('firmName', mssql.VarChar(firmName.length), firmName);
+            request.input('firmName', mssql.VarChar(255), firmName);
             const encryptedFirmMail = encrypt(firmMail);// krypterer email før lagring, symetrisk kryptering
-            request.input('firmEmail', mssql.VarChar(encryptedFirmMail.length), encryptedFirmMail);
+            request.input('firmEmail', mssql.VarChar(255), encryptedFirmMail);
             const hashedPassword = await bcrypt.hash(firmPassword, 10); // 10 salt runder gør koden sikrere
-            request.input('firmPassword', mssql.VarChar(hashedPassword.length), hashedPassword);
+            request.input('firmPassword', mssql.VarChar(255), hashedPassword);
 
             request.input('logoUrl', mssql.VarChar(logoUrl.length), logoUrl);
 
@@ -160,13 +160,13 @@ class Database{
             // Specificer vores query elementer.
             const request = await this.poolconnection.request();
             request.input('firmId', mssql.Int, firmId);
-            request.input('name', mssql.VarChar(name.length), name);
-            request.input('description', mssql.VarChar(description.length), description);
+            request.input('name', mssql.VarChar(255), name);
+            request.input('description', mssql.VarChar(255), description);
             request.input('condition', mssql.Int, condition);
             request.input('elligible', mssql.Int, elligible);
             
             if (quotas !== null) {
-                request.input('quotas', mssql.VarChar(quotas.length), quotas);
+                request.input('quotas', mssql.VarChar(255), quotas);
             } else {
                 request.input('quotas', mssql.VarChar, null);
             }

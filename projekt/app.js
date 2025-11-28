@@ -18,19 +18,38 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
+/*
 app.use(
-  helmet({
-    hsts: false,
-    contentSecurityPolicy: {
-      directives: {
-        defaultSrc: ["'self'"],
-        scriptSrc: ["'self'", "'unsafe-inline'"],
-        styleSrc: ["'self'", "'unsafe-inline'"],
-      },
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'", "https:"],
+      imgSrc: [
+        "'self'",
+        "data:",
+        "blob:",
+        "https://res.cloudinary.com",
+        "*.cloudinary.com"
+      ],
+      connectSrc: [
+        "'self'",
+        "https://res.cloudinary.com",
+        "*.cloudinary.com"
+      ],
+      fontSrc: ["'self'", "https:", "data:"],
+      objectSrc: ["'none'"],
+      upgradeInsecureRequests: []
     },
   })
-);
+);*/
+
+app.use((req, res, next) => {
+  console.log("CSP:", res.getHeader("Content-Security-Policy"));
+  next();
+});
+
+
 
 app.use(session({
   secret: process.env.SESSION_SECRET,

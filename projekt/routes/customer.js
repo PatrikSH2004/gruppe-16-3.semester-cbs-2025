@@ -3,6 +3,8 @@ var express = require('express');
 var router = express.Router();
 var path = require('path');
 const app = require('../app.js');
+const { encrypt, decrypt } = require('../backend/database/encryption');
+
 
 
 // IMPORTER MAIL-SERVICE
@@ -47,10 +49,14 @@ router.put('/bookTrip', async (req, res) => {
             virksomhedNavn = await req.app.locals.database.getVirkNavnByRewardId(rewardId);
         }
 
+        console.log("USER INFOOOOO HERERER ER WQEWEEEWEWE:",req.session.user);
+        const encryptedEmail = decrypt(req.session.user.email);
+        console.log("DECRYPTED EMAIL I BOOKTRIP:", encryptedEmail);
+
         if (forskel < 0) {
             const user = req.session.user;
             const rewardMail = rewardTemplate(user.name, date, time, reward);
-            await mailToUser(user.email, "Reward påmindelse", rewardMail);
+            await mailToUser(encryptedEmail, "Reward påmindelse", rewardMail);
 
             await req.app.locals.database.deleteUserReward(req.session.user.id, rewardId);
             res.status(200).json({ message: "Booking gemt og mail sendt!" });
@@ -61,10 +67,10 @@ router.put('/bookTrip', async (req, res) => {
             }
 
             const msg = bookingConfirmationTemplate(user.name, date, time);
-            await mailToUser(user.email, "Booking bekræftelse", msg);
+            await mailToUser(encryptedEmail, "Booking bekræftelse", msg);
 
             const reminder = rewardReminderTemplate(user.name, virksomhedNavn, forskel);
-            await mailToUser(user.email, "Reward påmindelse", reminder);
+            await mailToUser(encryptedEmail, "Reward påmindelse", reminder);
 
             res.status(200).json({ message: "Booking gemt og mail sendt!" });
         };
