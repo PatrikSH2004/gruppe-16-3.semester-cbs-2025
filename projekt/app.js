@@ -1,9 +1,11 @@
+require('dotenv').config();
 var express = require('express');
 var path = require('path');
 const session = require('express-session');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const rateLimit = require('express-rate-limit');
+const helmet = require("helmet");
 
 
 const createDatabaseConnection = require('./backend/database/database.js');
@@ -17,12 +19,30 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(
+  helmet({
+    hsts: false,
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'", "'unsafe-inline'"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+      },
+    },
+  })
+);
+
 app.use(session({
-  secret: 'hemmelig-nøgle-som-du-skal-skifte',
+  secret: process.env.SESSION_SECRET,
   resave: false,
-  saveUninitialized: true,
-  cookie: { secure: false }
+  saveUninitialized: false,
+  cookie: { 
+    secure: false,      // skift til true når du kører HTTPS i produktion
+    httpOnly: true,     // beskytter mod XSS
+    sameSite: 'lax'     // beskytter mod CSRF
+  }
 }));
+
 
 const globalLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,   // 15 minutter

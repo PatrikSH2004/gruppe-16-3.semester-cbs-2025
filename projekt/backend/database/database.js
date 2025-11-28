@@ -1,5 +1,9 @@
 //Importer fra mssql som giver mulighed for at udføre forespørgsler fra scriptet her.
 const mssql = require('mssql');
+const { encrypt, decrypt } = require('./encryption');
+const bcrypt = require('bcrypt');
+
+
 
 class Database{
     //Variable som kun anvendes i scopet inden for Database klassen.
@@ -44,8 +48,11 @@ class Database{
             // Specificer vores query elementer.
             const request = await this.poolconnection.request();
             request.input('brugerName', mssql.VarChar(name.length), name);
-            request.input('brugerEmail', mssql.VarChar(email.length), email);
-            request.input('brugerPassword', mssql.VarChar(password.length), password);
+            const encryptedEmail = encrypt(email); // Krypterer email før lagring, symetrisk kryptering
+            request.input('brugerEmail', mssql.VarChar(encryptedEmail.length), encryptedEmail);
+            const hashedPassword = await bcrypt.hash(password, 10); //10 salt runder 
+            request.input('brugerPassword', mssql.VarChar(hashedPassword.length), hashedPassword);
+
 
             // Afsender vores query request til databasen.
             const result = await request.query(`
@@ -66,8 +73,11 @@ class Database{
             // Specificer vores query elementer.
             const request = await this.poolconnection.request();
             request.input('firmName', mssql.VarChar(firmName.length), firmName);
-            request.input('firmEmail', mssql.VarChar(firmMail.length), firmMail);
-            request.input('firmPassword', mssql.VarChar(firmPassword.length), firmPassword);
+            const encryptedFirmMail = encrypt(firmMail);// krypterer email før lagring, symetrisk kryptering
+            request.input('firmEmail', mssql.VarChar(encryptedFirmMail.length), encryptedFirmMail);
+            const hashedPassword = await bcrypt.hash(firmPassword, 10); // 10 salt runder gør koden sikrere
+            request.input('firmPassword', mssql.VarChar(hashedPassword.length), hashedPassword);
+
             request.input('logoUrl', mssql.VarChar(logoUrl.length), logoUrl);
 
             // Afsender vores query request til databasen.
@@ -85,43 +95,65 @@ class Database{
 
     async findUserMatch(inputMail, inputPassword) {
         try {
-            // Specificer vores query elementer.
+            // Hent alle brugere
             const request = await this.poolconnection.request();
-            request.input('inputMail', mssql.VarChar(inputMail.length), inputMail);
-            request.input('inputPassword', mssql.VarChar(inputPassword.length), inputPassword);
+            const result = await request.query(`SELECT * FROM dis.bruger`);
+            const users = result.recordsets[0];
 
-            // Afsender vores query request til databasen.
-            const result = await request.query(`
-                SELECT * FROM dis.bruger
-                WHERE brugerMail = @inputMail AND brugerAdgangKode = @inputPassword
-            `);
+            // Klassisk for-loop
+            for (let i = 0; i < users.length; i++) {
+                const u = users[i];
 
-            return result.recordsets[0];
+                const decryptedMail = decrypt(u.brugerMail);
+
+                if (decryptedMail === inputMail) {
+                    // Sammenlign hashed password
+                    const passwordMatch = await bcrypt.compare(inputPassword, u.brugerAdgangKode);
+
+                    if (passwordMatch) {
+                        return [u]; // Returner samme format som før
+                    }
+                }
+            }
+
+            return []; // Ingen match
 
         } catch (error) {
-            console.error("Fejl ved håndtering af query request til findUserMatch metoden", error);
-        };
+            console.error("Fejl i findUserMatch:", error);
+        }
     };
+
+
 
     async findFirmMatch(inputMail, inputPassword) {
         try {
-            // Specificer vores query elementer.
             const request = await this.poolconnection.request();
-            request.input('inputMail', mssql.VarChar(inputMail.length), inputMail);
-            request.input('inputPassword', mssql.VarChar(inputPassword.length), inputPassword);
+            const result = await request.query(`SELECT * FROM dis.virksomhed`);
+            const firms = result.recordsets[0];
 
-            // Afsender vores query request til databasen.
-            const result = await request.query(`
-                SELECT * FROM dis.virksomhed
-                WHERE virkMail = @inputMail AND virkAdgangKode = @inputPassword
-            `);
+            // Klassisk for-loop
+            for (let i = 0; i < firms.length; i++) {
+                const f = firms[i];
 
-            return result.recordsets[0];
+                const decryptedMail = decrypt(f.virkMail);
+
+                if (decryptedMail === inputMail) {
+                    const passwordMatch = await bcrypt.compare(inputPassword, f.virkAdgangKode);
+
+                    if (passwordMatch) {
+                        return [f];
+                    }
+                }
+            }
+
+            return [];
 
         } catch (error) {
-            console.error("Fejl ved håndtering af query request til findFirmMatch metoden", error);
-        };
+            console.error("Fejl i findFirmMatch:", error);
+        }
     };
+
+
 
     async opretReward(firmId, name, description, condition, quotas, elligible) {
         try {
