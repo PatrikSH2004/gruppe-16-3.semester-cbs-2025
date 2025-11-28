@@ -10,10 +10,27 @@ router.get('/home', function(req, res) {
 });
 
 router.get('/data', async function (req, res) {
-  // Finder alle rewards for en virksomhed, ud fra deres virksomheds ID
-  allRewards = await req.app.locals.database.getAllRewardsByFirmId(req.session.firmId);
-  res.status(200).json({rewards : allRewards});
+  try {
+    const db = req.app.locals.database;
+    const firmId = req.session.firmId;
+
+    // 1. Hent alle rewards for firmaet
+    let allRewards = await db.getAllRewardsByFirmId(firmId);
+
+    // 2. For hver reward → tilføj eligibleCount
+    for (let reward of allRewards) {
+      reward.eligibleCount = await db.countEligibleUsersForReward(reward.rewardID);
+    }
+
+    // 3. Send tilbage til frontend
+    res.status(200).json({ rewards: allRewards });
+
+  } catch (error) {
+    console.error("Fejl i /data route:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
 });
+
 
 router.get('/create-reward', function(req, res) {
   res.sendFile(path.join(__dirname, '../public/pages/company/create-reward.html'));

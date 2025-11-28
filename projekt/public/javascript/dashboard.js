@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             <td>${reward.rewardName}</td>
             <td>${reward.betingelse} gange</td>
             <td>${reward.kvoter !== null ? reward.kvoter : 'Ubegrænset'}</td>
-            <td>${reward.eligible}</td>
+            <td>${reward.eligibleCount}</td>
             <td>${reward.beskrivelse}</td>
             <td>
                 <button class="delete-btn" data-id="${reward.rewardID}" title="Slet event">

@@ -408,7 +408,31 @@ class Database{
             console.error("Fejl ved håndtering af query request til getVirkNavnByRewardId metoden", error);
         };
     };
+
+
+
+    async countEligibleUsersForReward(rewardId) {
+        try {
+            const request = await this.poolconnection.request();
+            request.input('rewardId', mssql.Int, rewardId);
+
+            const result = await request.query(`
+                SELECT COUNT(*) AS eligibleCount
+                FROM dis.brugerRewards br
+                JOIN dis.reward r ON br.rewardID = r.rewardID
+                WHERE br.rewardID = @rewardId
+                AND br.counter = r.betingelse;
+            `);
+
+            return result.recordsets[0][0].eligibleCount;
+
+        } catch (error) {
+            console.error("Fejl i countEligibleUsersForReward:", error);
+            return 0;
+        }
+    }
 };
+
 
 /*
 En funktion som opretter et database klasse-objekt og forbinder til databasen,
