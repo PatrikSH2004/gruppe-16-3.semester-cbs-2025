@@ -74,6 +74,22 @@ const globalLimiter = rateLimit({
 app.use(globalLimiter);
 app.set('trust proxy', 1); //Det gør at Express kan se rigtige IP-adresser.
 
+const authenticationUser = function(req, res, next) {
+  if (req.session.user.id){
+    next();
+  } else {
+    res.status(401).json({ message: "Unauthorized" });
+  };
+};
+
+const authenticationFirm = function(req, res, next) {
+  if (req.session.firmId){
+    next();
+  } else {
+    res.status(401).json({ message: "Unauthorized" });
+  };
+};
+
 (async () => {
   try {
     const database = await createDatabaseConnection(passwordConfig);
@@ -90,8 +106,8 @@ app.set('trust proxy', 1); //Det gør at Express kan se rigtige IP-adresser.
     app.use("/uploadTest", uploadTestRoute);
 
     app.use('/', indexRouter);
-    app.use('/customer', customerRouter);
-    app.use('/firm', firmRouter);
+    app.use('/customer', authenticationUser, customerRouter);
+    app.use('/firm', authenticationFirm, firmRouter);
     app.use('/db', dbRouter);
     app.use("/mail", mailRouter.router);
 

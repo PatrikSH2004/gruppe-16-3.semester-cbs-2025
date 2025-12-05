@@ -37,19 +37,13 @@ router.get('/create-reward', function(req, res) {
 });
 
 router.delete('/delete-reward', async function (req, res) {
-  // Vi tjekker først, om personen der vil slette en reward har tilladelse til det.
-  if (req.session.firmId){
-    // Vi bliver først nødt til at slette alle tilknyttede kunders rewards.
-    await req.app.locals.database.deleteUserRewards(targetID);
+  // Vi bliver først nødt til at slette alle tilknyttede kunders rewards.
+  await req.app.locals.database.deleteUserRewards(targetID);
 
-    // Vi fjerner rewards til sidst fra databasen.
-    await req.app.locals.database.deleteRewardById(req.body.rewardsID);
+  // Vi fjerner rewards til sidst fra databasen.
+  await req.app.locals.database.deleteRewardById(req.body.rewardsID);
   
-    res.sendStatus(200);
-  } else {
-    res.sendStatus(403); // Forbidden
-  };
- 
+  res.sendStatus(200);
 });
 
 module.exports = router;
