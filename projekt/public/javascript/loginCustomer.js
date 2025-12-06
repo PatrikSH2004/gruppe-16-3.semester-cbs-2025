@@ -17,6 +17,7 @@ document.addEventListener("DOMContentLoaded", () =>{
         const response = await fetch("/customerLogin", {
             method : "POST",
             headers : {"Content-Type" : "application/json"},
+            // Ser der er noget her, som der ikke er krypteret
             body : JSON.stringify({userMail, userPassword})
         });
 
