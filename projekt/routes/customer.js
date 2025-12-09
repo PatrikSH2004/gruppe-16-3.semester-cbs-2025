@@ -33,6 +33,7 @@ router.get('/bookTrip', function(req, res) {
 
 router.put('/bookTrip', async (req, res) => {
     try {
+        console.log("im pressssed");
         const { date, time, virkNavn, rewardId, reward } = req.body;
 
         // Starter med at få counteren til at stige med en.

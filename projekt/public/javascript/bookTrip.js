@@ -1,4 +1,3 @@
-// Book Trip functionality
 
 document.addEventListener('DOMContentLoaded', () => {
     const dateInput = document.getElementById("date");
@@ -7,7 +6,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const cancelBtn = document.querySelector('.cancel-btn');
     const bookingForm = document.querySelector(".booking-form");
 
-    // Preview functionality
     function updatePreview() {
         const date = dateInput.value;
         const time = timeInput.value;
@@ -29,7 +27,6 @@ document.addEventListener('DOMContentLoaded', () => {
         timeInput.addEventListener("change", updatePreview);
     }
 
-    // Cancel button
     if (cancelBtn) {
         cancelBtn.addEventListener('click', (e) => {
             e.preventDefault();
@@ -37,7 +34,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Form submission
     if (bookingForm) {
         bookingForm.addEventListener("submit", async (e) => {
             e.preventDefault();
@@ -55,6 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const reward = params.get('reward');
 
             try {
+                
                 const response = await fetch('/customer/bookTrip', {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },

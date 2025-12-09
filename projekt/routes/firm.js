@@ -36,6 +36,7 @@ router.get('/create-reward', function(req, res) {
   res.sendFile(path.join(__dirname, '../public/pages/company/create-reward.html'));
 });
 
+
 router.delete('/delete-reward', async function (req, res) {
   // Vi bliver først nødt til at slette alle tilknyttede kunders rewards.
   await req.app.locals.database.deleteUserRewards(targetID);
