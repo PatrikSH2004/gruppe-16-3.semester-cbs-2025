@@ -4,7 +4,6 @@ document.addEventListener("DOMContentLoaded", () =>{
     
     // Event listener til, når brugeren klikker på login.
     form.addEventListener("submit", async (event) => {
-        
         // Undgår standard opførsel af form data i URL ved submit.
         event.preventDefault();
         
@@ -27,7 +26,5 @@ document.addEventListener("DOMContentLoaded", () =>{
             const data = await response.json();
             alert(data.error || "Login failed");
         };
-
     });
-
 });

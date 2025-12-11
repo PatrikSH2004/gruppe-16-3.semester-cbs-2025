@@ -143,18 +143,18 @@ const rewardData = {
 
 // Selve algoritmen til pinger testen.
 const test = async function() {
-  console.log("\nTest nr. 1:");
+  console.log("\nTest nr. 1 (Frontpage):");
   await pingGet(pinger1);
-  console.log("\nTest nr. 2:");
+  console.log("\nTest nr. 2: (Customer Login):");
   await pingPost(pingerHost, pingerPath, jsonData);
-  console.log("\nTest nr. 3: (Login)");
+  console.log("\nTest nr. 3: (Firm Login)");
   const loginResult = await pingPostWithCookie(pingerHost, firmLoginPath, firmLoginData, null, 'POST');
   const cookie = getCookieFromResponse(loginResult.res);
   if (!cookie) {
     console.error("No session cookie received. Cannot proceed.");
     return;
   };
-  console.log("\nTest nr. 3: (Creating reward)");
+  console.log("\nTest nr. 4: (Creating reward)");
   await pingPostWithCookie(pingerHost, createRewardPath, rewardData, cookie, 'POST');
 };
 test();
